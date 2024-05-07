@@ -1,0 +1,100 @@
+@import url(../../variables.css);
+
+footer{
+    width: 100%;
+    height: auto;
+    background-color: var(--black-blue);
+    padding: 40px 0;
+}
+
+footer nav{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+
+footer .subscribe{
+    background-color:  rgba(255, 255, 255, 0.05);
+    padding: 50px 40px;
+    margin: 40px 0;
+    display: flex;
+    column-gap: 30px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+footer .sub_text{
+    max-width: 500px;
+}
+
+footer .sub_text p {
+    color: var(--light) ;
+}
+
+footer form{
+    display: flex;
+    gap: 20px;
+}
+
+footer form input[type="email"]{
+    background-color: transparent;
+    border: 1px solid var(--drak-grey);
+    width: 230px;
+    padding: 0 20px;
+}
+
+footer form input[type="submit"]{
+    background-color: var(--yellow);
+}
+
+.foot{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.footer_text p{
+    color: var(--medium-grey);
+}
+
+.social_link{
+    display: flex;
+    gap: 20px;
+}
+
+@media screen and (max-width: 900px) {
+    footer .subscribe{
+        flex-direction: column;
+        row-gap: 35px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    footer nav, footer form, footer .foot{
+        flex-direction: column;
+        width: 100%;
+        row-gap: 20px;
+    }
+    footer form input[type="email"]{
+        width: 100%;
+        padding: 13px 20px;
+    }
+    footer ul li{
+        line-height: 25px;
+    }
+    footer ul{
+        text-align: center;
+    }
+    footer .subscribe{
+        padding: 50px 20px;
+    }
+    footer .sub_text p{
+        text-align: center;
+    }
+    
+}
+

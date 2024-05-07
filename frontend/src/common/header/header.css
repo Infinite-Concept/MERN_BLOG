@@ -1,0 +1,48 @@
+@import url(../../variables.css);
+
+.header{
+    background-color: var(--black-blue);
+}
+
+header{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+}
+
+.menu_list{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+ul li{
+    display: inline-block;
+    padding: 0 15px;   
+}
+
+ul li a{
+    color: var(--light);
+    text-transform: capitalize;
+}
+
+.logo img{
+    width: 100px;
+}
+
+@media screen and (max-width: 800px) {
+    ul li{
+        padding: 0 10px;   
+    }
+    .menu_list{
+        gap: 10px;
+    }
+}
+
+/* @media screen and (max-width: 700px) {
+    ul{
+        display: none;
+    }
+} */

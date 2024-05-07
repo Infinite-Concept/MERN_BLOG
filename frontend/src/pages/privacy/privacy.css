@@ -1,0 +1,37 @@
+@import url(../../variables.css);
+
+.privacy{
+    width: 100%;
+    background-color: var(--Lavender);
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.privacy section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+}
+
+.privacy section h2{
+    margin-bottom: 20px;
+}
+
+.privacy_page h2{
+    color: var(--black-blue);
+    text-align: center !important;
+}
+
+.privacy_inner{
+    max-width: 800px;
+    margin: 80px auto;
+}
+
+.privacy_inner h2, .privacy_inner p{
+    margin-bottom: 20px;
+    text-align: justify;
+}
