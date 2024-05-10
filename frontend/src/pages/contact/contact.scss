@@ -1,0 +1,126 @@
+@import url(../../variables.css);
+
+.contact{
+    width: 100%;
+
+    .contact_container{
+        max-width: 800px;
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 80px;
+        margin-bottom: 50px;
+
+        .contact_jumbtrom{
+            width: 100%;
+
+            h3, h1{
+                color: var(--black-blue);
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            h3{
+                letter-spacing: 3px;
+            }
+
+            h1{
+                margin-bottom: 25px;
+            }
+
+            p{
+                text-align: center;
+                color: var(--medium-grey);
+            }
+        }
+
+        .contact_hours{
+            margin-top: 40px;
+            display: flex;
+            align-items: start;
+            padding: 40px;
+            background-color: var(--Purple);
+            color: var(--light);
+            gap: 50px;
+
+            
+
+            .inner{
+                width: 100%;
+    
+                .inner_hours{
+                    width: 100%;
+                    padding-bottom: 15px;
+                    border-bottom: 1px solid #ffffff2c;
+                    margin-bottom: 15px;
+    
+                    p{
+                        color: #ffffff8a;
+                    }
+                }
+    
+                h3.heading5{
+                    color: var(--light);
+                    margin-bottom: 7px;
+                }
+    
+                big.body1{
+                    color: #ffffff8a;
+                }
+            }
+            
+        }
+
+        .contact_form{
+            width: 100%;
+            margin-top: 40px;
+            margin-bottom: 80px;
+
+            .input_submit{
+
+                input{
+                    width: 100%;
+                    text-align: center;
+                    background-color: var(--yellow);
+                    font-size: 20px;
+                    font-family: "Sen", sans-serif;
+                    color: var(--black-blue);
+                    font-weight: 700;
+                    padding: 15px 0;
+                }
+            }
+
+            .input_group{
+                margin-bottom: 13px;
+
+                input{
+                    width: 100%;
+                    border: 1px solid #5a5a5a52;
+                    height: 50px;
+                    padding: 20px;
+                    outline: none;
+                }
+
+                textarea{
+                    width: 100%;
+                    border: 1px solid #5a5a5a52;
+                    height: 144px;
+                    resize: none;
+                    padding: 20px;
+                }
+            }
+        }
+        
+    }
+
+    @media screen and (max-width: 500px) {
+        .contact_hours{
+            flex-wrap: wrap;
+        }
+    }
+
+    @media screen and (max-width: 400px) {
+        .contact_jumbtrom h1{
+            font-size: 35px;
+        }
+    }
+}
