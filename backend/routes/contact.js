@@ -2,6 +2,7 @@ const router = require("express").Router()
 const mongoose = require("mongoose")
 const Joi = require('joi');
 const Contact = require("../models/contact")
+const sendVerificationEmail = require("../lib/email")
 
 router.post("/form/data", async(req, res) => {
     try {
@@ -26,6 +27,12 @@ router.post("/form/data", async(req, res) => {
         })
 
         await contactInfo.save();
+
+        // Send email to client
+        await sendVerificationEmail(req.body.email, 'Message Sent Successfully!', 'Your message has been successfully sent.');
+
+        await sendVerificationEmail('ifenowoifesegun@gmail.com', 'New Message Received', ` ${req.body.subject} \n\n\n ${req.body.message}`);
+
         res.status(200).json({message : 'Message sent successfully!'})
 
     } catch (error) {

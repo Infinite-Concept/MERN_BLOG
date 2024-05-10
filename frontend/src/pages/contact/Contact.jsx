@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
+import axios from "axios"
 import "./contact.scss"
 
 function Contact() {
 
   const[contactForm, setContactForm] = useState({})
+  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: '', body: '' });
 
   const handleChange = (event) => {
     const name = event.target.name
@@ -12,10 +15,32 @@ function Contact() {
     setContactForm(values => ({...values, [name]: value}))
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(contactForm);
+    try {
+
+      const response = await axios.post("http://localhost:3042/contact/form/data", contactForm)
+
+      if (response.status === 200) {
+        // Set modal content for success
+        setModalContent({ title: 'Success', body: response.data.message });
+        // Show the modal
+        setShowModal(true);
+      } else {
+          // Set modal content for error
+        setModalContent({ title: 'Error', body: response.data.message });
+        // Show the modal
+        setShowModal(true);
+      }
+      
+    } catch (error) {
+      console.log(error);
+      // Set modal content for error
+      setModalContent({ title: 'Error', body: 'An error occurred. Please try again later.' });
+      // Show the modal
+      setShowModal(true);
+    }
   }
 
   return (
@@ -69,10 +94,32 @@ function Contact() {
           </div>
 
           <div className="input_submit">
-            <input type="submit" value="Send Message" />
+            <input type="submit" value="Send Message" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
           </div>
         </form>
       </div>
+
+      {/* Modal  */}
+      {showModal && (
+        <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="exampleModalLabel">{modalContent.title}</h1>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowModal(false)}></button>
+              </div>
+              <div className="modal-body">
+                <p>
+                {modalContent.body}
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setShowModal(false)}>Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       
     </section>
   )
