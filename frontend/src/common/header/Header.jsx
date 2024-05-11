@@ -19,11 +19,11 @@ function Header() {
                 </li>
 
                 <li>
-                    <NavLink className="a" to="/" >blog</NavLink>
+                    <NavLink className="a" to="/blog" >blog</NavLink>
                 </li>
 
                 <li>
-                    <NavLink className="a" to="/" >About us</NavLink>
+                    <NavLink className="a" to="/about" >About us</NavLink>
                 </li>
 
                 <li>

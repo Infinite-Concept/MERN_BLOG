@@ -6,6 +6,9 @@ import "./App.css"
 import Contact from './pages/contact/Contact'
 import Footer from './common/footer/Footer'
 import Privacy from './pages/privacy/Privacy'
+import About from './pages/about/About'
+import Blog from './pages/blog/Blog'
+import Author from './pages/author/Author'
 
 function App() {
   return (
@@ -15,6 +18,10 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/privacy' element={<Privacy />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/blog' element={<Blog />} />
+        <Route path='/author' element={<Author />} />
+
       </Routes>
       <Footer />
     </Router>

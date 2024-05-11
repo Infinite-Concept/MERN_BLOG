@@ -18,10 +18,10 @@ function Footer() {
                 </div>
 
                 <ul>
-                    <li><NavLink to="">home</NavLink></li>
-                    <li><NavLink to="">blog</NavLink></li>
-                    <li><NavLink to="">about us</NavLink></li>
-                    <li><NavLink to="">contact us</NavLink></li>
+                    <li><NavLink to="/">home</NavLink></li>
+                    <li><NavLink to="/blog">blog</NavLink></li>
+                    <li><NavLink to="/about">about us</NavLink></li>
+                    <li><NavLink to="/contact">contact us</NavLink></li>
                     <li><NavLink to="/privacy">privacy policy</NavLink></li>
                 </ul>
             </nav>
