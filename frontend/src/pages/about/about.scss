@@ -1,0 +1,168 @@
+@import url(../../variables.css);
+
+.aboutus{
+    width: 100%;
+    position: relative;
+    padding: 50px 0 ;
+
+    .about_first{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: var(--light);
+        padding: 0 20px;
+        gap: 40px;
+
+        .first_text{
+            width: 100%;
+            position: relative;
+            top: 40px;
+            background-color: var(--light);
+            left: 50px;
+            max-width: 550px;
+            padding: 50px 30px;
+
+            h3{
+                color: var(--black-blue);
+                font-weight: 400;
+                margin-bottom: 15px;
+            }
+
+            h2{
+                color: var(--black-blue);
+            }
+        }
+
+        .second_text{
+            max-width: 500px;
+             p{
+                color: var(--drak-grey);
+             }
+        }
+    }
+
+    .banner{
+        background-image: url(../../assets/image/banner.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        min-height: 400px;
+        width: 100%;
+
+        .content{
+            height: 100%;
+            position: relative;
+            top: 247px;
+            left: 5vw;
+            max-width: 630px;
+
+            .inner{
+                background-color: var(--yellow);
+                max-width: 570px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                min-height: 130px;
+                padding: 0 30px;
+
+                .inner_text {
+                    
+
+                    h3, p{
+                        color: var(--black-blue);
+                    }
+                }
+            }
+
+            div.line{
+                display: flex;
+
+                span.line{
+                    width: 50%;
+                    height: 20px;
+                    background-color: var(--Purple);
+                }
+
+                span.line1{
+                    width: 60%;
+                    height: 20px;
+                    background-color: var(--yellow);
+                }
+            }
+        }
+    }
+
+    .mission{
+        width: 100%;
+        background-color: var(--Lavender);
+        padding: 80px 50px 60px;
+        column-gap: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .vision{
+
+            h3{
+                margin-bottom: 20px;
+                text-transform: uppercase;
+            }
+
+            h3, h2{
+                color: var(--black-blue);
+            }
+
+            h2{
+                // max-width: 500px;
+                margin-bottom: 15px;
+            }
+
+            p{
+                color: var(--medium-grey);
+                text-align: justify;
+                line-height: 25px;
+            }
+        }
+    }
+
+    .team{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 60px 0 0 30px;
+        column-gap: 70px;
+        position: relative;
+
+        .content{
+
+            max-width: 550px;
+            h2{
+                color: #232536;
+                margin-bottom: 15px;
+            }
+
+            h3{
+                color: var(--black-blue);
+                margin-bottom: 10px;
+            }
+
+            p{
+                color: var(--black-blue);
+                line-height: 23px;
+            }
+        }
+
+        .shapes{
+            position: absolute;
+            width: 103px;
+            height: 116px;
+            background-color: var(--yellow);
+            border-top-left-radius: 50px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-20%, -50%);
+        }
+    }
+}

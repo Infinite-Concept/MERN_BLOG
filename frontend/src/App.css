@@ -103,7 +103,14 @@ section{
 }
 
 .cap_03{
-  font-weight: 900;
+  font-weight: 500;
+}
+
+.display{
+  font-weight: 700;
+  font-size: 50px;
+  letter-spacing: -2px;
+  font-family: "Sen", sans-serif;
 }
 
 /* common button  */
