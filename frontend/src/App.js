@@ -9,6 +9,8 @@ import Privacy from './pages/privacy/Privacy'
 import About from './pages/about/About'
 import Blog from './pages/blog/Blog'
 import Author from './pages/author/Author'
+import CreateAuthor from './pages/author/CreateAuthor'
+import LoginAuthor from './pages/author/LoginAuthor'
 
 function App() {
   return (
@@ -21,6 +23,10 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/blog' element={<Blog />} />
         <Route path='/author' element={<Author />} />
+        <Route path='/join-author' element={<CreateAuthor />} />
+        <Route path='/login-author' element={<LoginAuthor />} />
+
+
 
       </Routes>
       <Footer />
