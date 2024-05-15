@@ -10,7 +10,8 @@ const authorScheme = new mongoose.Schema({
         require: true,
         type: String,
         lowercase: true, 
-        trim: true 
+        trim: true,
+        unique: true
     },
     content: {
         require: true,
