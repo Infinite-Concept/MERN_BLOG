@@ -134,10 +134,10 @@ function About() {
                         <h3 className='heading3'>Floyd Miles</h3>
                         <h4 className='body2'>Content Writer @Company</h4>
                         <div className="social">
-                            <a href=""><img src={facebook} alt="" /></a>
-                            <a href=""><img src={twitter} alt="" /></a>
-                            <a href=""><img src={instagram} alt="" /></a>
-                            <a href=""><img src={linkedin} alt="" /></a>
+                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
+                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
+                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
+                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
                         </div>
                     </div>
 
@@ -146,10 +146,10 @@ function About() {
                         <h3 className='heading3'>Floyd Miles</h3>
                         <h4 className='body2'>Content Writer @Company</h4>
                         <div className="social">
-                            <a href=""><img src={facebook} alt="" /></a>
-                            <a href=""><img src={twitter} alt="" /></a>
-                            <a href=""><img src={instagram} alt="" /></a>
-                            <a href=""><img src={linkedin} alt="" /></a>
+                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
+                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
+                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
+                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
                         </div>
                     </div>
 
@@ -158,10 +158,10 @@ function About() {
                         <h3 className='heading3'>Floyd Miles</h3>
                         <h4 className='body2'>Content Writer @Company</h4>
                         <div className="social">
-                            <a href=""><img src={facebook} alt="" /></a>
-                            <a href=""><img src={twitter} alt="" /></a>
-                            <a href=""><img src={instagram} alt="" /></a>
-                            <a href=""><img src={linkedin} alt="" /></a>
+                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
+                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
+                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
+                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
                         </div>
                     </div>
 
@@ -170,10 +170,10 @@ function About() {
                         <h3 className='heading3'>Floyd Miles</h3>
                         <h4 className='body2'>Content Writer @Company</h4>
                         <div className="social">
-                            <a href=""><img src={facebook} alt="" /></a>
-                            <a href=""><img src={twitter} alt="" /></a>
-                            <a href=""><img src={instagram} alt="" /></a>
-                            <a href=""><img src={linkedin} alt="" /></a>
+                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
+                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
+                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
+                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
                         </div>
                     </div>
 
@@ -182,10 +182,10 @@ function About() {
                         <h3 className='heading3'>Floyd Miles</h3>
                         <h4 className='body2'>Content Writer @Company</h4>
                         <div className="social">
-                            <a href=""><img src={facebook} alt="" /></a>
-                            <a href=""><img src={twitter} alt="" /></a>
-                            <a href=""><img src={instagram} alt="" /></a>
-                            <a href=""><img src={linkedin} alt="" /></a>
+                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
+                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
+                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
+                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
                         </div>
                     </div>
 
@@ -194,10 +194,10 @@ function About() {
                         <h3 className='heading3'>Floyd Miles</h3>
                         <h4 className='body2'>Content Writer @Company</h4>
                         <div className="social">
-                            <a href=""><img src={facebook} alt="" /></a>
-                            <a href=""><img src={twitter} alt="" /></a>
-                            <a href=""><img src={instagram} alt="" /></a>
-                            <a href=""><img src={linkedin} alt="" /></a>
+                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
+                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
+                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
+                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
                         </div>
                     </div>
 
@@ -206,10 +206,10 @@ function About() {
                         <h3 className='heading3'>Floyd Miles</h3>
                         <h4 className='body2'>Content Writer @Company</h4>
                         <div className="social">
-                            <a href=""><img src={facebook} alt="" /></a>
-                            <a href=""><img src={twitter} alt="" /></a>
-                            <a href=""><img src={instagram} alt="" /></a>
-                            <a href=""><img src={linkedin} alt="" /></a>
+                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
+                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
+                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
+                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
                         </div>
                     </div>
 
@@ -218,10 +218,10 @@ function About() {
                         <h3 className='heading3'>Floyd Miles</h3>
                         <h4 className='body2'>Content Writer @Company</h4>
                         <div className="social">
-                            <a href=""><img src={facebook} alt="" /></a>
-                            <a href=""><img src={twitter} alt="" /></a>
-                            <a href=""><img src={instagram} alt="" /></a>
-                            <a href=""><img src={linkedin} alt="" /></a>
+                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
+                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
+                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
+                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
                         </div>
                     </div>
 

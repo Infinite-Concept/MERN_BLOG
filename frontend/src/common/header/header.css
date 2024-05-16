@@ -12,6 +12,10 @@ header{
     height: 80px;
 }
 
+header p{
+    margin-bottom: 0;
+}
+
 .menu_list{
     display: flex;
     align-items: center;

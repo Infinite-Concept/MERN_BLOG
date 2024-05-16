@@ -6,10 +6,9 @@ require('dotenv').config()
 const contact = require("./routes/contact")
 const author = require("./routes/author")
 
-
-
 const app = express()
-
+app.use(cors())
+const port = process.env.PORT
 
 // MongoDB connection
 mongoose.connect('mongodb://localhost/blog', {})
@@ -20,12 +19,17 @@ mongoose.connect('mongodb://localhost/blog', {})
   )
   .catch(err => console.error('Could not connect to MongoDB', err));
 
-
-app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
-const port = process.env.PORT
+// Configure CORS
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+
 
 app.use("/contact", contact)
 app.use("/author", author)

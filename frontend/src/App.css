@@ -7,6 +7,15 @@
   border: none;
 }
 
+a{
+  text-decoration: none !important;
+}
+
+p{
+  margin: 0;
+  margin-bottom: 0;
+}
+
 img{
   max-width: 100%;
   height: auto;

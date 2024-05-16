@@ -4,9 +4,7 @@ import Home from './pages/home/Home'
 import Header from './common/header/Header'
 import "./App.css"
 import 'bootstrap/dist/css/bootstrap.min.css'; 
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import Popper from 'popper.js';
-import $ from 'jquery';
+import 'bootstrap/dist/js/bootstrap.min.js';
 import Contact from './pages/contact/Contact'
 import Footer from './common/footer/Footer'
 import Privacy from './pages/privacy/Privacy'

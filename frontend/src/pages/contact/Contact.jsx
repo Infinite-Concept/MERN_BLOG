@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import axios from "axios"
 import "./contact.scss"
+import Modal from '../../common/modal/Modal'
 
 function Contact() {
 
   const[contactForm, setContactForm] = useState({})
-  const [showModal, setShowModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', body: '' });
 
   const handleChange = (event) => {
@@ -26,12 +27,12 @@ function Contact() {
         // Set modal content for success
         setModalContent({ title: 'Success', body: response.data.message });
         // Show the modal
-        setShowModal(true);
+        setIsOpen(true);
       } else {
           // Set modal content for error
         setModalContent({ title: 'Error', body: response.data.message });
         // Show the modal
-        setShowModal(true);
+        setIsOpen(true);
       }
       
     } catch (error) {
@@ -39,7 +40,7 @@ function Contact() {
       // Set modal content for error
       setModalContent({ title: 'Error', body: 'An error occurred. Please try again later.' });
       // Show the modal
-      setShowModal(true);
+      setIsOpen(true);
     }
   }
 
@@ -94,31 +95,17 @@ function Contact() {
           </div>
 
           <div className="input_submit">
-            <input type="submit" value="Send Message" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
+            <input type="submit" value="Send Message" onClick={() => setIsOpen(true)}/>
           </div>
         </form>
       </div>
 
       {/* Modal  */}
-      {showModal && (
-        <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title fs-5" id="exampleModalLabel">{modalContent.title}</h1>
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowModal(false)}></button>
-              </div>
-              <div className="modal-body">
-                <p>
-                {modalContent.body}
-                </p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setShowModal(false)}>Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
+      {isOpen && (
+        <Modal isOpen={isOpen} onClose={closeModal}>
+          <h2>Register Successful</h2>
+          <p>A verification message has been send to your mail, verify your email before you can login</p>
+        </Modal>
       )}
       
     </section>
