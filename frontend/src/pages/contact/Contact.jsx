@@ -21,18 +21,22 @@ function Contact() {
 
     try {
 
-      const response = await axios.post("http://localhost:3042/contact/form/data", contactForm)
+      const response = await axios.post("http://localhost:3057/contact/form/data", contactForm)
 
-      if (response.status === 200) {
+      console.log(response);
+      if (response.status == 400) {
         // Set modal content for success
-        setModalContent({ title: 'Success', body: response.data.message });
-        // Show the modal
-        setIsOpen(true);
-      } else {
-          // Set modal content for error
-        setModalContent({ title: 'Error', body: response.data.message });
-        // Show the modal
-        setIsOpen(true);
+        
+        setModalContent({ title: response.data.message , body: 'Unable to send message' });
+        openModal();
+        
+      } if(response.code === "ERR_NETWORK"){
+        setModalContent({ title: response.code, body: response.message });
+        openModal();
+      }else {
+        setModalContent({ title: response.data.message , body: "your message have been send" });
+        openModal();
+        
       }
       
     } catch (error) {
@@ -40,9 +44,23 @@ function Contact() {
       // Set modal content for error
       setModalContent({ title: 'Error', body: 'An error occurred. Please try again later.' });
       // Show the modal
-      setIsOpen(true);
+      openModal()
     }
   }
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+      setIsOpen(false);
+      setContactForm({
+        fullName: "",
+        email: "",
+        subject: "",
+        message: ""
+      })
+  };
 
   return (
     <section className='contact'>
@@ -95,7 +113,7 @@ function Contact() {
           </div>
 
           <div className="input_submit">
-            <input type="submit" value="Send Message" onClick={() => setIsOpen(true)}/>
+            <input type="submit" value="Send Message"/>
           </div>
         </form>
       </div>
@@ -103,8 +121,8 @@ function Contact() {
       {/* Modal  */}
       {isOpen && (
         <Modal isOpen={isOpen} onClose={closeModal}>
-          <h2>Register Successful</h2>
-          <p>A verification message has been send to your mail, verify your email before you can login</p>
+          <h2>{modalContent.title}</h2>
+          <p>{modalContent.body}</p>
         </Modal>
       )}
       

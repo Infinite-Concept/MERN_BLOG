@@ -13,7 +13,11 @@ const authorScheme = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    content: {
+    password: {
+        require: true,
+        type: String,
+    },
+    profession: {
         require: true,
         type: String,
         trim: true 
@@ -24,25 +28,34 @@ const authorScheme = new mongoose.Schema({
             type: String,
             trim: true 
         },
-        twitter: {
-            require: true,
-            type: String,
-            trim: true 
-        },
         instagram: {
             require: true,
             type: String,
             trim: true 
         },
-        linkedIn: {
+        twitter: {
+            require: true,
+            type: String,
+            trim: true 
+        },
+        linkedin: {
             require: true,
             type: String,
             trim: true 
         },
     },
+    file: {
+        require: true,
+        type: String,
+    },
+    verified: {
+        type: Boolean,
+        default: false,
+    },
+    verificationToken: String,
     createdDate: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     },
 })
 
