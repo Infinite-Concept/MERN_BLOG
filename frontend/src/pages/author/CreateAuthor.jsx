@@ -1,11 +1,25 @@
 import React, { useState } from 'react'
 import "./author.scss"
 import { Link } from 'react-router-dom';
+import axios from "axios"
+import Modal from '../../common/modal/Modal';
 
 function CreateAuthor() {
 
-  const[contactForm, setContactForm] = useState({})
+  const[contactForm, setContactForm] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    profession: '',
+    facebook: '',
+    instagram: '',
+    twitter: '',
+    linkedin: '',
+    file: null
+  })
   const [errors, setErrors] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: '', body: '' });
   
   const handleChange = (event) => {
     const {name, value} = event.target
@@ -14,6 +28,33 @@ function CreateAuthor() {
 
     setErrors(prevErrors => ({ ...prevErrors, [name]: '' }));
   }
+
+  const handleFileChange = (e) => {
+    setContactForm(prevData => ({
+      ...prevData,
+      file: e.target.files[0]
+    }))
+    setErrors(prevErrors => ({ ...prevErrors, file: '' }));
+  }
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+      setIsOpen(false);
+      setContactForm({
+        fullName: '',
+        email: '',
+        password: '',
+        profession: '',
+        facebook: '',
+        instagram: '',
+        twitter: '',
+        linkedin: '',
+        file: null
+      })
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -78,10 +119,30 @@ function CreateAuthor() {
       // Submit form if no errors
       try {
         // Your form submission logic here
-        console.log(contactForm);
+        const response = await axios.post("http://localhost:3057/author/register", contactForm, {
+          headers: {
+            'Content-Type': "multipart/form-data"
+          }
+        })
+
+        const result = await response.data
+
+        console.log(response);
+        if(response.status >= 400 ){
+          setModalContent({ title: response.response.data.error , body: 'Unable to register user' });
+          openModal();
+        } else if(response.code == "ERR_BAD_REQUEST" ){
+          setModalContent({ title: response.data.message , body: 'Unable to register user' });
+          openModal();
+        }else{
+          setModalContent({ title: result.message , body: 'Registration successful, a message has been sent to your email, verify your email before you can login' });
+          openModal();
+        }
 
       } catch (error) {
         console.log(error);
+        setModalContent({ title: 'Error', body: 'An error occurred. Please try again later.' });
+        openModal()
       }
     }
   }
@@ -92,7 +153,7 @@ function CreateAuthor() {
         <h2 className='heading2'>Create account</h2>
         <p className='body1'>join us for free</p>
 
-        <form action="" method="post" className='contact_form' onSubmit={handleSubmit}>
+        <form action="" method="post" className='contact_form' onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="input_group">
             <input type="text" placeholder='Full Name'  className='body1' name="fullName" value={contactForm.fullName} onChange={handleChange} />
             {errors.fullName && <p className="error">{errors.fullName}</p>}
@@ -109,7 +170,7 @@ function CreateAuthor() {
           </div>
 
           <div className="input_group">
-            <input type="text" placeholder='Profession'  className='body1' name="profession" value={contactForm.subject} onChange={handleChange} />
+            <input type="text" placeholder='Profession'  className='body1' name="profession" value={contactForm.profession} onChange={handleChange} />
             {errors.profession && <p className="error">{errors.profession}</p>}
           </div>
 
@@ -134,7 +195,7 @@ function CreateAuthor() {
           </div>
 
           <div className="input_group">
-            <input type="file" placeholder='Linkedin link'  className='body1' name="file" value={contactForm.file} onChange={handleChange} accept='.png, .jpeg'/>
+            <input type="file" placeholder='Linkedin link'  className='body1' name="file" onChange={handleFileChange} accept='image/png, image/jpeg'/>
             {errors.file && <p className="error">{errors.file}</p>}
           </div>
 
@@ -147,6 +208,13 @@ function CreateAuthor() {
           <p>Already have an account? <Link to="/login-author">Log in</Link></p>
         </div>
       </div>
+
+      {isOpen && (
+        <Modal isOpen={isOpen} onClose={closeModal}>
+          <h2>{modalContent.title}</h2>
+          <p>{modalContent.body}</p>
+        </Modal>
+      )}
     </section>
   )
 }

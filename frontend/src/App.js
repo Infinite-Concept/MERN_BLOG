@@ -28,8 +28,6 @@ function App() {
         <Route path='/join-author' element={<CreateAuthor />} />
         <Route path='/login-author' element={<LoginAuthor />} />
 
-
-
       </Routes>
       <Footer />
     </Router>

@@ -7,16 +7,12 @@ import facebook from "../../assets/icons/facebook.svg"
 import instagram from "../../assets/icons/instagram.svg"
 import linkedin from "../../assets/icons/linkedin.svg"
 import twitter from "../../assets/icons/twitter.svg"
-import { useNavigate } from "react-router-dom";
+import JoinTeams from '../../common/join teams/JoinTeams'
 
 
 function About() {
 
-    const navigate = useNavigate();
-
-    const goToAuthor = () => {
-        navigate("/join-author")
-    }
+    
   return (
     <section>
         <div className="aboutus">
@@ -229,11 +225,8 @@ function About() {
                 </div>
             </div>
 
-            <div className="story">
-                <h2 className='heading2'>Join our team to be a part of our story</h2>
-                <p className='body1'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-                <button className='white_btn' onClick={goToAuthor}>Join Now</button>
-            </div>
+            <JoinTeams />
+            
         </div>
     </section>
   )

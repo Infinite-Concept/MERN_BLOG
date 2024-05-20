@@ -1,10 +1,14 @@
 import React from 'react'
+import JoinTeams from '../../common/join teams/JoinTeams'
 
 function Blog() {
   return (
-    <div>
-      
-    </div>
+    <section className="blogPage">
+      <div className="blogPageWrapper">
+
+        <JoinTeams />
+      </div>
+    </section>
   )
 }
 

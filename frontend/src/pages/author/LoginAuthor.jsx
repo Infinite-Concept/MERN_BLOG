@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import "./author.scss"
+import axios from "axios"
 import { Link } from 'react-router-dom';
 
 function LoginAuthor() {
@@ -34,13 +35,12 @@ function LoginAuthor() {
     }
 
     if (Object.keys(errors).length > 0) {
-      // If there are errors, update state to display them
       setErrors(errors);
     } else {
-      // Submit form if no errors
       try {
-        // Your form submission logic here
-        console.log(contactForm);
+        const result = await axios.post("http://localhost:3057/author/login", contactForm)
+        
+        console.log(result);
 
       } catch (error) {
         console.log(error);

@@ -22,6 +22,10 @@ const authorScheme = new mongoose.Schema({
         type: String,
         trim: true 
     },
+    bio: {
+        require: true,
+        type: String,
+    },
     social: {
         facebook: {
             require: true,
@@ -55,7 +59,7 @@ const authorScheme = new mongoose.Schema({
     verificationToken: String,
     createdDate: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     },
 })
 
