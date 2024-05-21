@@ -131,6 +131,7 @@ section{
   font-weight: 700;
   font-size: 18px;
   background: #FFFFFF;
+  color: var(--black-blue);
 }
 
 @media screen and (max-width: 800px) {

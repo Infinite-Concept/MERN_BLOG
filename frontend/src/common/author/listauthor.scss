@@ -1,0 +1,60 @@
+@import url(../../variables.css);
+
+.listauthor{
+    width: 100%;
+
+    .authors{
+        width: 100%;
+        padding: 50px 0;
+
+        .title{
+            padding-bottom: 30px;
+
+            h4{
+                color: var(--black-blue);
+                text-align: center;
+                letter-spacing: -2px;
+            }
+        }
+
+        .items{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+
+            .item{
+                background-color: var(--Light-grey);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 30px 0;
+
+                .author{
+                    width: 110px;
+                    margin-bottom: 20px;
+                }
+
+                h3{
+                    color: var(--black-blue);
+                    margin-bottom: 5px;
+                }
+
+                h4{
+                    color: var(--medium-grey);
+                    margin-bottom: 20px;
+                }
+
+                .social{
+                    display: flex;
+                    gap: 16px;
+
+                    a{
+                        img{
+                            width: 20px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

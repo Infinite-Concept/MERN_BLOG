@@ -1,0 +1,32 @@
+@import url(../variables.css);
+
+.subPost{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+
+    .post_content{
+        max-width: 500px;
+
+        h4{
+            color: var(--Purple);
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        h5{
+            color: var(--medium-grey);
+
+            a{
+                color: var(--Purple);
+            }
+        }
+
+        h2{
+            letter-spacing: -2px;
+        }
+    }
+}

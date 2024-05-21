@@ -2,12 +2,9 @@ import React from 'react'
 import "./about.scss"
 import team from "../../assets/image/growth-hands.png"
 import why from "../../assets/image/three-persons.png"
-import author from "../../assets/image/author1.png"
-import facebook from "../../assets/icons/facebook.svg"
-import instagram from "../../assets/icons/instagram.svg"
-import linkedin from "../../assets/icons/linkedin.svg"
-import twitter from "../../assets/icons/twitter.svg"
+
 import JoinTeams from '../../common/join teams/JoinTeams'
+import ListAuthor from '../../common/author/ListAuthor'
 
 
 function About() {
@@ -119,111 +116,7 @@ function About() {
                 </div>
             </div>
 
-            <div className="authors">
-                <div className="title">
-                    <h4 className='heading2'>List of Authors</h4>
-                </div>
-
-                <div className="items">
-                    <div className="item">
-                        <img className='author' src={author} alt="" />
-                        <h3 className='heading3'>Floyd Miles</h3>
-                        <h4 className='body2'>Content Writer @Company</h4>
-                        <div className="social">
-                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
-                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
-                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
-                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
-                        </div>
-                    </div>
-
-                    <div className="item">
-                        <img className='author' src={author} alt="" />
-                        <h3 className='heading3'>Floyd Miles</h3>
-                        <h4 className='body2'>Content Writer @Company</h4>
-                        <div className="social">
-                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
-                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
-                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
-                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
-                        </div>
-                    </div>
-
-                    <div className="item">
-                        <img className='author' src={author} alt="" />
-                        <h3 className='heading3'>Floyd Miles</h3>
-                        <h4 className='body2'>Content Writer @Company</h4>
-                        <div className="social">
-                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
-                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
-                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
-                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
-                        </div>
-                    </div>
-
-                    <div className="item">
-                        <img className='author' src={author} alt="" />
-                        <h3 className='heading3'>Floyd Miles</h3>
-                        <h4 className='body2'>Content Writer @Company</h4>
-                        <div className="social">
-                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
-                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
-                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
-                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
-                        </div>
-                    </div>
-
-                    <div className="item">
-                        <img className='author' src={author} alt="" />
-                        <h3 className='heading3'>Floyd Miles</h3>
-                        <h4 className='body2'>Content Writer @Company</h4>
-                        <div className="social">
-                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
-                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
-                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
-                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
-                        </div>
-                    </div>
-
-                    <div className="item">
-                        <img className='author' src={author} alt="" />
-                        <h3 className='heading3'>Floyd Miles</h3>
-                        <h4 className='body2'>Content Writer @Company</h4>
-                        <div className="social">
-                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
-                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
-                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
-                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
-                        </div>
-                    </div>
-
-                    <div className="item">
-                        <img className='author' src={author} alt="" />
-                        <h3 className='heading3'>Floyd Miles</h3>
-                        <h4 className='body2'>Content Writer @Company</h4>
-                        <div className="social">
-                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
-                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
-                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
-                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
-                        </div>
-                    </div>
-
-                    <div className="item">
-                        <img className='author' src={author} alt="" />
-                        <h3 className='heading3'>Floyd Miles</h3>
-                        <h4 className='body2'>Content Writer @Company</h4>
-                        <div className="social">
-                            <a href="https://facebook.com"><img src={facebook} alt="" /></a>
-                            <a href="https://facebook.com"><img src={twitter} alt="" /></a>
-                            <a href="https://facebook.com"><img src={instagram} alt="" /></a>
-                            <a href="https://facebook.com"><img src={linkedin} alt="" /></a>
-                        </div>
-                    </div>
-
-                    
-                </div>
-            </div>
+            <ListAuthor />
 
             <JoinTeams />
             
