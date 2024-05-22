@@ -5,14 +5,14 @@ const blogPostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    content: {
+    category: {
         type: String,
         required: true
     },
     image: {
         require: true,
     },
-    category:{
+    content:{
         require: true,
         type: String
     },
@@ -29,7 +29,6 @@ const blogPostSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-    
 
 })
 
