@@ -5,6 +5,7 @@ require('dotenv').config()
 // router
 const contact = require("./routes/contact")
 const author = require("./routes/author")
+const post = require("./routes/post")
 
 const app = express()
 app.use(cors())
@@ -33,3 +34,5 @@ app.use(cors({
 
 app.use("/contact", contact)
 app.use("/author", author)
+app.use("/post", post)
+

@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; 
+import ImageResize from 'quill-image-resize-module-react';
 import axios from "axios"
+
+Quill.register('modules/imageResize', ImageResize);
 
 function EditorComponent() {
   const [editorHtml, setEditorHtml] = useState('');
+  const [error, setError] = useState({});
   const [title, setTitle] = useState({
     title: '',
     category: '',
@@ -28,60 +32,107 @@ function EditorComponent() {
       setEditorHtml(html);
   };
 
-  const handleSave = async () => {
-    try {
-        const formData = new FormData();
-        formData.append('title', title.title);
-        formData.append('category', title.category);
-        formData.append('content', editorHtml);
+  const handleSave = async (e) => {
+    e.preventDefault()
 
-        // Send POST request to backend API endpoint
-        await axios.post('http://localhost:5000/api/posts', formData);
+    const errors = {};
 
-        // Optionally, reset state after successful save
+    if(title.title === ""){
+      errors.title = "Title is required"
+    }else if(title.title.length < 20){
+      errors.title = "Title must contain more than 20 character"
+    }
+
+    if(title.category === ""){
+      errors.title = "Category is required"
+    }
+
+    if (title.file === "") {
+      errors.file = "file is required";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      // If there are errors, update state to display them
+      setError(errors);
+    } else {
+
+      try {
+        const data = {
+          title: title.title,
+          category: title.category,
+          file: title.file,
+          content: editorHtml
+        }
+  
+        console.log(data);
+        const response = await axios.post('http://localhost:3057/post/create', data, {
+          headers: {
+            'Content-Type': "multipart/form-data"
+          }
+        })
+
         setTitle({ title: '', category: '' });
         setEditorHtml('');
-    } catch (error) {
+
+      } catch (error) {
         console.error('Error saving post:', error);
+      }
     }
+
   };
 
   return (
     <section style={{padding: "50px"}}>
 
-      <input
-        type="text"
-        placeholder="Enter title..."
-        name='title'
-        value={title.title}
-        onChange={handleTitleChange}
-        style={{width: '100%', border: "1px solid rgba(222, 216, 215, 0.4)", padding: "10px 20px", marginBottom: "20px"}}
-      />
+      <form className='createBlogForm' action="" method="post" encType='multipart/form-data' onSubmit={handleSave}>
 
-      <input
-        type="text"
-        placeholder="Enter category..."
-        name='category'
-        value={title.category}
-        onChange={handleTitleChange}
-        style={{width: '100%', border: "1px solid rgba(222, 216, 215, 0.4)", padding: "10px 20px", marginBottom: "20px"}}
-      />
+        <div className='input_group'>
+          <input
+            type="text"
+            placeholder="Enter title..."
+            name='title'
+            value={title.title}
+            onChange={handleTitleChange}
+          />
+        </div>
+        {error.title && <p>{error.title}</p>}
 
-      <input
-        type="file"
-        name="file"
-        onChange={handleFileChange}
-        style={{width: '100%', border: "1px solid rgba(222, 216, 215, 0.4)", padding: "10px 20px", marginBottom: "20px"}}
-      />
+        <div className='input_group'>
+          <select name="category" value={title.category} onChange={handleTitleChange}>
+            <option disabled selected value="">Choose category</option>
+            <option value="business">Business</option>
+            <option value="startup">Startup</option>
+            <option value="economy">Economy</option>
+            <option value="technology">Technology</option>
+          </select>
+        </div>
+        {error.category && <p>{error.category}</p>}
 
-      <ReactQuill
-        theme="snow"
-        value={editorHtml}
-        onChange={handleChange}
-        modules={EditorComponent.modules}
-        formats={EditorComponent.formats}
-        placeholder="Write something amazing..."
-      />
+        <div className='input_group'>
+          <input
+            type="file"
+            name="file"
+            onChange={handleFileChange}
+          />  
+        </div>
+        {error.file && <p>{error.file}</p>}
+
+        <ReactQuill
+          theme="snow"
+          value={editorHtml}
+          onChange={handleChange}
+          modules={EditorComponent.modules}
+          formats={EditorComponent.formats}
+          placeholder="Write something amazing..."
+        />
+        <input
+          type="submit"
+          value="Create Blog"
+          className='submit_create'
+          style={{width: '100%', border: "1px solid rgba(222, 216, 215, 0.4)", padding: "10px 20px", marginBottom: "20px"}}
+        />
+
+      </form>
     </section>
   )
 }
@@ -91,20 +142,31 @@ EditorComponent.modules = {
       [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
       [{ size: [] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' }
+      ],
       ['link', 'image', 'video'],
+      [{ 'color': [] }, { 'background': [] }],
       ['clean'],
   ],
   clipboard: {
       // toggle to add extra line breaks when pasting HTML:
       matchVisual: false,
   },
+  imageResize: {
+    parchment: Quill.import('parchment'),
+    modules: ['Resize', 'DisplaySize']
+  }
 };
 
 EditorComponent.formats = [
   'header', 'font', 'size',
   'bold', 'italic', 'underline', 'strike', 'blockquote',
-  'list', 'bullet', 'link', 'image', 'video'
+  'list', 'bullet','indent', 'link', 'image', 'video',
+  'color', 'background',
 ];
 
 export default EditorComponent

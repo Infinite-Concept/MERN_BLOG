@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const Schema = mongoose.Schema;
 
 const blogPostSchema = new mongoose.Schema({
     title: {
@@ -9,11 +10,12 @@ const blogPostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    image: {
-        require: true,
+    file: {
+        type: String,
+        required: true
     },
     content:{
-        require: true,
+        required: true,
         type: String
     },
     author: {
