@@ -36,6 +36,10 @@ ul li a{
     width: 100px;
 }
 
+.menu_list-Ul{
+    margin-bottom: 0;
+}
+
 @media screen and (max-width: 800px) {
     ul li{
         padding: 0 10px;   

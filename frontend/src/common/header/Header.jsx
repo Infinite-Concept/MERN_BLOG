@@ -13,7 +13,7 @@ function Header() {
         </div>
 
         <div className="menu_list">
-            <ul>
+            <ul className='menu_list-Ul'>
                 <li>
                     <NavLink className="a" to="/" >home</NavLink>
                 </li>
