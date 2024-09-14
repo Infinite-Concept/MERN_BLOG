@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./author.scss"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios"
 import Modal from '../../common/modal/Modal';
+import { useAuth } from '../../auth/Auth';
 
 function CreateAuthor() {
 
@@ -20,6 +21,15 @@ function CreateAuthor() {
   const [errors, setErrors] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', body: '' });
+
+  const { user } = useAuth()
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(user.is_user_logged){
+      return navigate('/')
+    }
+  }, [])
   
   const handleChange = (event) => {
     const {name, value} = event.target
@@ -63,9 +73,7 @@ function CreateAuthor() {
 
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
 
-    if (!contactForm.fullName) {
-      errors.fullName = 'Full Name is required';
-    }
+    if (!contactForm.fullName) errors.fullName = 'Full Name is required';
 
     if (!contactForm.email) {
       errors.email = 'Email is required';
@@ -108,13 +116,12 @@ function CreateAuthor() {
       errors.linkedin = 'LinkedIn URL is invalid';
     }
 
-    if (!contactForm.file) {
-      errors.file = 'add a profile pic';
-    } 
+    if (!contactForm.file) errors.file = 'Profile picture is required';
 
     if (Object.keys(errors).length > 0) {
       // If there are errors, update state to display them
       setErrors(errors);
+      return;
     } else {
       // Submit form if no errors
       try {
@@ -126,8 +133,6 @@ function CreateAuthor() {
         })
 
         const result = await response.data
-
-        console.log(response);
         if(response.status >= 400 ){
           setModalContent({ title: response.response.data.error , body: 'Unable to register user' });
           openModal();
@@ -141,7 +146,7 @@ function CreateAuthor() {
 
       } catch (error) {
         console.log(error);
-        setModalContent({ title: 'Error', body: 'An error occurred. Please try again later.' });
+        setModalContent({ title: error.message, body: 'An error occurred. Please try again later.' });
         openModal()
       }
     }
@@ -160,7 +165,7 @@ function CreateAuthor() {
           </div>
 
           <div className="input_group">
-            <input type="email" placeholder='Your Email'  className='body1' name="email" value={contactForm.email} onChange={handleChange} />
+            <input type="text" placeholder='Your Email'  className='body1' name="email" value={contactForm.email} onChange={handleChange} />
             {errors.email && <p className="error">{errors.email}</p>}
           </div>
 

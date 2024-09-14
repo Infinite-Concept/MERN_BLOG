@@ -1,12 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./author.scss"
 import axios from "axios"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Modal from '../../common/modal/Modal';
+import { useAuth } from '../../auth/Auth';
 
 function LoginAuthor() {
+  const[contactForm, setContactForm] = useState({
+    email: "",
+    password: ""
+  })
+  const [errors, setErrors] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: '', body: '' });
+  const { loginUser, user } = useAuth()
+  const navigate = useNavigate();
 
-    const[contactForm, setContactForm] = useState({})
-    const [errors, setErrors] = useState({});
+  useEffect(() => {
+    if(user.is_user_logged){
+      return navigate('/')
+    }
+  }, [])
   
   const handleChange = (event) => {
     const {name, value} = event.target
@@ -16,9 +30,20 @@ function LoginAuthor() {
     setErrors(prevErrors => ({ ...prevErrors, [name]: '' }));
   }
 
+  const closeModal = () => {
+    setIsOpen(false);
+    setContactForm({
+      ...contactForm,
+      password: ''
+    })
+  };
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const errors = {};
 
     if (!contactForm.email) {
@@ -27,11 +52,8 @@ function LoginAuthor() {
       errors.email = 'Email is invalid';
     }
 
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
     if (!contactForm.password) {
       errors.password = 'Password is required';
-    } else if (!passwordRegex.test(contactForm.password)) {
-      errors.password = 'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one digit';
     }
 
     if (Object.keys(errors).length > 0) {
@@ -39,15 +61,24 @@ function LoginAuthor() {
     } else {
       try {
         const result = await axios.post("http://localhost:3057/author/login", contactForm)
+        const response = await result.data
         
-        console.log(result);
+        if(!response.status){
+          setModalContent({ title: response.message, body: 'Invalid credentails Please try again later.' });
+          openModal()
+          console.log(response);
+        }else{
+          const userdata = response.accessToken
+          loginUser(userdata)
+        }
 
       } catch (error) {
         console.log(error);
+        setModalContent({ title: error.message, body: 'An error occurred. Please try again later.' });
+        openModal()
       }
     }
   }
-
 
   return (
     <section>
@@ -57,13 +88,17 @@ function LoginAuthor() {
 
         <form action="" method="post" className='contact_form' onSubmit={handleSubmit}>
           <div className="input_group">
-            <input type="email" placeholder='Your Email'  className='body1' name="email" value={contactForm.email} onChange={handleChange} />
+            <input type="email" placeholder='Your Email'  className='body1' name='email' value={contactForm.email} onChange={handleChange} />
             {errors.email && <p className="error">{errors.email}</p>}
           </div>
 
           <div className="input_group">
-            <input type="password" placeholder='Enter your password'  className='body1' name="password" value={contactForm.password} onChange={handleChange} />
+            <input type="password" placeholder='Enter your password'  className='body1' name='password' value={contactForm.password} onChange={handleChange} />
             {errors.password && <p className="error">{errors.password}</p>}
+          </div>
+
+          <div className="forgetPassword">
+            <Link to="/forgot-password" >forgot password?</Link>
           </div>
 
           <div className="input_submit">
@@ -75,6 +110,13 @@ function LoginAuthor() {
           <p>Don't have an account? <Link to="/join-author">Sign up</Link></p>
         </div>
       </div>
+
+      {isOpen && (
+        <Modal isOpen={isOpen} onClose={closeModal}>
+          <h2>{modalContent.title}</h2>
+          <p>{modalContent.body}</p>
+        </Modal>
+      )}
     </section>
   )
 }

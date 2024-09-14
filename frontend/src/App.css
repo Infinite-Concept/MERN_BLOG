@@ -134,6 +134,10 @@ section{
   color: var(--black-blue);
 }
 
+.white_btn a{
+  color: var(--black-blue);
+}
+
 @media screen and (max-width: 800px) {
   section{
     padding: 0 20px;

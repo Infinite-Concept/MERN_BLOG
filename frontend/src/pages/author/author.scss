@@ -68,6 +68,18 @@
                 margin-bottom: 15px;
             }
         }
+
+        .forgetPassword{
+            width: 100%;
+            display: flex;
+            justify-content: end;
+            padding: 10px 0 20px;
+
+            a{
+                text-transform: capitalize;
+                color: var(--black-blue);
+            }
+        }
     }
 
     .login{

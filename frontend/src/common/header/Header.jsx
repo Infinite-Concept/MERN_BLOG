@@ -1,9 +1,12 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import './header.css'
 import logo from "../../assets/icons/Logo.svg"
+import { useAuth } from '../../auth/Auth'
 
 function Header() {
+
+    const { user } = useAuth()
   return (
     <div className="header">
         <section>
@@ -32,7 +35,7 @@ function Header() {
             </ul>
 
             <div className="white_btn">
-                <p>Subscribe</p>
+                {user.is_user_logged ? <Link to='/createblog'>Create Post</Link> : <p>Subscribe</p>}
             </div>
         </div>
         </header>

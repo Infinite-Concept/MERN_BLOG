@@ -14,24 +14,28 @@ import Author from './pages/author/Author'
 import CreateAuthor from './pages/author/CreateAuthor'
 import LoginAuthor from './pages/author/LoginAuthor'
 import CreateBlog from './pages/blog/CreateBlog'
+import ForgotPassword from './pages/author/ForgotPassword'
+import AuthProvider from './auth/Auth'
 
 function App() {
   return (
     <Router>
-      <Header />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/contact' element={<Contact />} />
-        <Route path='/privacy' element={<Privacy />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/blog' element={<Blog />} />
-        <Route path='/author' element={<Author />} />
-        <Route path='/join-author' element={<CreateAuthor />} />
-        <Route path='/login-author' element={<LoginAuthor />} />
-        <Route path='/createblog' element={<CreateBlog />} />
-
-      </Routes>
-      <Footer />
+      <AuthProvider>  
+        <Header />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/privacy' element={<Privacy />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/blog' element={<Blog />} />
+          <Route path='/author' element={<Author />} />
+          <Route path='/join-author' element={<CreateAuthor />} />
+          <Route path='/login-author' element={<LoginAuthor />} />
+          <Route path='/createblog' element={<CreateBlog />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+        </Routes>
+        <Footer />
+      </AuthProvider>
     </Router>
   )
 }

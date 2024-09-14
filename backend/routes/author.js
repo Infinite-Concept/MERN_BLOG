@@ -10,18 +10,15 @@ const multerConfig = require("../lib/multer")
 const jwt = require("jsonwebtoken")
 
 const upload = multerConfig("uploads/authorPic/")
-
+const secretKey = process.env.ACCESS_TOKEN_SECRET;
 
 router.get("/", async(req, res) => {
     try {
-
         const authors = await AuthorDetails.find()
         res.json(authors)
-        
     } catch (error) {
         res.status(500).json({message: "Error fetching authors"})
     }
-
 })
 
 const authorSchema = Joi.object({
@@ -101,8 +98,6 @@ router.get("/verify/:token", async(req, res) => {
 
         const user = await Author.findOne({verificationToken: token});
 
-        console.log( user)
-
         if(!user){
             res.status(400).json({message: "invalid token"})
         }
@@ -120,34 +115,38 @@ router.get("/verify/:token", async(req, res) => {
     }
 })
 
-const generateSecretKey = () => {
-    const secretKey = crypto.randomBytes(32).toString("hex");
-    return secretKey;
-  };
-  
-const secretKey = generateSecretKey();
-
 router.post("/login", async (req, res) => {
     try{
 
         const{ email, password} = req.body
 
         const user = await Author.findOne({email})
-        console.log(user);
 
         if(!user){
-            return res.status(400).json({message: "invalid email"})
+            return res.json({
+                status: false,
+                message: "invalid email"})
         }
 
         const validPassword = await bcrypt.compare(password, user.password)
 
         if(!validPassword){
-            return res.status(400).json({message: "invalid email or password"})
+            return res.json({
+                status: false,
+                message: "invalid email or password"})
         }
 
-        const accessToken = jwt.sign({email: user.email, userId: user._id}, secretKey, { expiresIn: '1h' })
+        if(!user.verified){
+            return res.json({
+                status: false,
+                message: "Not a verified author"})
+        }
 
-        res.status(200).json({ accessToken: accessToken }).redirect("/")
+        const accessToken = jwt.sign({email: user.email, userId: user._id}, secretKey, { expiresIn: '1h'})
+
+        res.json({ 
+            status: true,
+            accessToken: accessToken })
 
     }catch(err){
         console.log(err);
@@ -155,5 +154,38 @@ router.post("/login", async (req, res) => {
     }
 })
 
+const verifyUser = async(req, res, next) => {
+    const token = req.headers['authorization']?.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ status: false, message: "No token provided" });
+    }
+
+    jwt.verify(token, secretKey, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ status: false, message: "Unauthorized" });
+        }
+
+        console.log(decoded);
+        req.userId = decoded.userId
+        next()
+    })
+}
+
+router.get("/verifyAuthor", verifyUser, async (req, res) => {
+    try {
+        const user = await Author.findById(req.userId).select('-password');
+
+        if (!user) {
+            return res.status(404).json({ status: false, message: "User not found" });
+        }
+
+        res.json({ status: true, user });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "unable to login user"})
+    }
+})
 
 module.exports = router
