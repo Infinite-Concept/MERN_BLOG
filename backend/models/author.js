@@ -57,6 +57,7 @@ const authorScheme = new mongoose.Schema({
         default: false,
     },
     verificationToken: String,
+    forgetToken: String,
     createdDate: {
         type: Date,
         default: Date.now

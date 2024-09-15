@@ -16,6 +16,8 @@ import LoginAuthor from './pages/author/LoginAuthor'
 import CreateBlog from './pages/blog/CreateBlog'
 import ForgotPassword from './pages/author/ForgotPassword'
 import AuthProvider from './auth/Auth'
+import Profile from './pages/author/Profile'
+import ResetPassword from './pages/author/ResetPassword'
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path='/login-author' element={<LoginAuthor />} />
           <Route path='/createblog' element={<CreateBlog />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/reset-password/:token' element={<ResetPassword />} />
+          <Route path='/profile' element={<Profile />} />
         </Routes>
         <Footer />
       </AuthProvider>

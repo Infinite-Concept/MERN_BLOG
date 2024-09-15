@@ -1,13 +1,20 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../auth/Auth';
 import "./jointeam.scss"
 
 function JoinTeams() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const {user} = useAuth()
 
-    const goToAuthor = () => {
-        navigate("/join-author")
-    }
+  const goToAuthor = () => {
+    navigate("/join-author")
+  }
+
+  if(user.is_user_logged){
+    return
+  }
+
   return (
     <div className='jointeams'>
       <div className="story">

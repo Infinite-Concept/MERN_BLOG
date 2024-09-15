@@ -35,7 +35,13 @@
                 font-weight: 700;
                 padding: 15px 0;
             }
+
+            &.reset_submit{
+                margin-bottom: 30px;
+            }
         }
+
+        
 
         .input_group{
             margin-bottom: 13px;
@@ -62,7 +68,7 @@
                 font-size: 16px;
                 font-weight: 500;
                 margin-top: 7px;
-                text-transform: lowercase;
+                text-transform: capitalize;
                 letter-spacing: -1px;
                 font-family: "Inter", sans-serif;
                 margin-bottom: 15px;

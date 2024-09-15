@@ -40,6 +40,25 @@ ul li a{
     margin-bottom: 0;
 }
 
+.hover-text-custom{
+    color: #fff;
+}
+
+.hover-text,
+.hover-text-custom:hover {
+    color: #232536 !important;
+}
+
+.headerNavDrop ul{
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center;
+}
+
+.headerNavDrop a{
+    color: var(--black-blue);
+}
+
 @media screen and (max-width: 800px) {
     ul li{
         padding: 0 10px;   

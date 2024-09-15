@@ -184,7 +184,74 @@ router.get("/verifyAuthor", verifyUser, async (req, res) => {
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: "unable to login user"})
+        res.status(500).json({message: "Internal server error. Try again later"})
+    }
+})
+
+router.post("/forgot-password", async (req, res) => {
+    try {
+
+        const{email} = req.body
+
+        const user = await Author.findOne({email})
+        
+        if(!user){
+            return res.json({
+                status: false,
+                message: "User do not exit"
+            })
+        }
+
+        user.forgetToken = crypto.randomBytes(20).toString("hex");
+
+        const savedUser = await user.save()
+
+        let subject =
+        `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` 
+        +`Click the following link to reset your email: http://localhost:3000/reset-password/${savedUser.forgetToken} \n\n\n\n`
+        + `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+
+        sendVerificationEmail(savedUser.email, "Password Reset Confirmation", subject )
+
+        res.json({ 
+            status: true,
+            message: 'Password Reset' });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Internal server error. Try again later"})
+    }
+})
+
+router.get("/forgot", async(req, res) => {
+    try{
+
+        const {password, token} = req.body
+
+        const user = await Author.findOne({forgetToken: token});
+
+        if(!user){
+            res.json({
+                status: false,
+                message: "invalid token"})
+        }
+
+        const genSalt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, genSalt)
+        if(!hashedPassword){
+            res.status(500).json({message: "internal server error"})
+        }
+
+        user.password = hashedPassword
+        user.forgetToken = undefined;
+        await user.save()
+
+        res.status(200).json({message: "verified successfully "})
+
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({message: "email verification failed"})
     }
 })
 
