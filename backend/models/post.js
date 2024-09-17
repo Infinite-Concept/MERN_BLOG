@@ -10,7 +10,7 @@ const blogPostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    file: {
+    mainImage: {
         type: String,
         required: true
     },
@@ -18,7 +18,7 @@ const blogPostSchema = new mongoose.Schema({
         required: true,
         type: String
     },
-    author: {
+    authorID: {
         type: Schema.Types.ObjectId,
         ref: 'author',
         required: true
@@ -34,6 +34,6 @@ const blogPostSchema = new mongoose.Schema({
 
 })
 
-const BlogPost = mongoose.model('BlogPost', blogPostSchema);
+const Blog = new mongoose.model('BlogPost', blogPostSchema);
 
-module.exports = BlogPost;
+module.exports = Blog;

@@ -3,33 +3,43 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; 
 import ImageResize from 'quill-image-resize-module-react';
 import axios from "axios"
+import { useAuth } from '../auth/Auth';
 
 Quill.register('modules/imageResize', ImageResize);
 
 function EditorComponent() {
-  const [editorHtml, setEditorHtml] = useState('');
   const [error, setError] = useState({});
-  const [title, setTitle] = useState({
+  const [blog, setBlog] = useState({
     title: '',
     category: '',
+    content: '',
     file: null
   });
+  const {user, baseURL} = useAuth()
+
+  let authorId = user?.user?._id;
+  
 
   const handleTitleChange = (e) => {
     const {name, value} = e.target
 
-    setTitle({ ...title, [name]: value })
+    setBlog({ ...blog, [name]: value })
+
+    setError(prevErrors => ({ ...prevErrors, [name]: '' }));
   };
 
   const handleFileChange = (e) => {
-    setTitle(prevData => ({
+    setBlog(prevData => ({
       ...prevData,
       file: e.target.files[0]
     }));
   };
 
   const handleChange = (html) => {
-      setEditorHtml(html);
+    setBlog(prevData => ({
+      ...prevData,
+      content: html
+    }));
   };
 
   const handleSave = async (e) => {
@@ -37,42 +47,38 @@ function EditorComponent() {
 
     const errors = {};
 
-    if(title.title === ""){
+    if(!blog.title){
       errors.title = "Title is required"
-    }else if(title.title.length < 20){
+    }else if(blog.title.length < 20){
       errors.title = "Title must contain more than 20 character"
     }
 
-    if(title.category === ""){
-      errors.title = "Category is required"
+    if(!blog.category){
+      errors.category = "Category is required"
     }
 
-    if (title.file === "") {
+    if (!blog.file) {
       errors.file = "file is required";
     }
 
     if (Object.keys(errors).length > 0) {
-      // If there are errors, update state to display them
       setError(errors);
     } else {
 
       try {
-        const data = {
-          title: title.title,
-          category: title.category,
-          file: title.file,
-          content: editorHtml
-        }
+        
+        const formData = new FormData();
+        formData.append("title", blog.title);
+        formData.append("category", blog.category);
+        formData.append("file", blog.file);
+        formData.append("content", blog.content);
+        formData.append("userId", authorId);
   
-        console.log(data);
-        const response = await axios.post('http://localhost:3057/post/create', data, {
-          headers: {
-            'Content-Type': "multipart/form-data"
-          }
-        })
-
-        setTitle({ title: '', category: '' });
-        setEditorHtml('');
+        // console.log(data);
+        const response = await axios.post(`${baseURL}post/create`, formData)
+        console.log(response);
+        
+        // setTitle({ title: '', category: '' });
 
       } catch (error) {
         console.error('Error saving post:', error);
@@ -91,15 +97,15 @@ function EditorComponent() {
             type="text"
             placeholder="Enter title..."
             name='title'
-            value={title.title}
+            value={blog.title}
             onChange={handleTitleChange}
           />
         </div>
         {error.title && <p>{error.title}</p>}
 
         <div className='input_group'>
-          <select name="category" value={title.category} onChange={handleTitleChange}>
-            <option disabled selected value="">Choose category</option>
+          <select name="category" defaultValue="" onChange={handleTitleChange}>
+            <option disabled value="">Choose category</option>
             <option value="business">Business</option>
             <option value="startup">Startup</option>
             <option value="economy">Economy</option>
@@ -119,7 +125,7 @@ function EditorComponent() {
 
         <ReactQuill
           theme="snow"
-          value={editorHtml}
+          value={blog.content}
           onChange={handleChange}
           modules={EditorComponent.modules}
           formats={EditorComponent.formats}

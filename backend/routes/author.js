@@ -149,7 +149,7 @@ router.post("/login", async (req, res) => {
             accessToken: accessToken })
 
     }catch(err){
-        console.log(err);
+        console.error(err);
         res.status(500).json({message: "unable to login user"})
     }
 })
@@ -165,8 +165,6 @@ const verifyUser = async(req, res, next) => {
         if (err) {
             return res.status(401).json({ status: false, message: "Unauthorized" });
         }
-
-        console.log(decoded);
         req.userId = decoded.userId
         next()
     })
@@ -174,7 +172,7 @@ const verifyUser = async(req, res, next) => {
 
 router.get("/verifyAuthor", verifyUser, async (req, res) => {
     try {
-        const user = await Author.findById(req.userId).select('-password');
+        const user = await Author.findById(req.userId).select('-password -createdDate -forgetToken -verified');
 
         if (!user) {
             return res.status(404).json({ status: false, message: "User not found" });
@@ -223,15 +221,14 @@ router.post("/forgot-password", async (req, res) => {
     }
 })
 
-router.get("/forgot", async(req, res) => {
+router.post("/reset-password", async(req, res) => {
     try{
-
         const {password, token} = req.body
 
         const user = await Author.findOne({forgetToken: token});
 
         if(!user){
-            res.json({
+            return res.json({
                 status: false,
                 message: "invalid token"})
         }
@@ -239,19 +236,20 @@ router.get("/forgot", async(req, res) => {
         const genSalt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, genSalt)
         if(!hashedPassword){
-            res.status(500).json({message: "internal server error"})
+            return res.status(500).json({message: "internal server error"})
         }
 
         user.password = hashedPassword
         user.forgetToken = undefined;
         await user.save()
 
-        res.status(200).json({message: "verified successfully "})
-
+        res.json({
+            status: true,
+            message: "Password reset successfully "})
 
     }catch(err){
         console.log(err);
-        res.status(500).json({message: "email verification failed"})
+        res.status(500).json({message: "Internal server error. Try again later"})
     }
 })
 

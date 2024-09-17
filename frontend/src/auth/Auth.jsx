@@ -10,11 +10,17 @@ function AuthProvider({children}) {
         is_user_logged: false,
         user: null
     })
+
     const navigate = useNavigate()
+    const baseURL = 'http://localhost:3057/'; 
 
     const loginUser = async (user) => {
         Cookies.set("author_token", user)
         navigate('/')
+        setUser({
+            ...user,
+            is_user_logged: true,
+        })
     }
 
     useEffect(() => {
@@ -23,19 +29,24 @@ function AuthProvider({children}) {
         if(user_token){
             const verifyUser = async() => {
                 try {
-                    const user = await axios.get("http://localhost:3057/author/verifyAuthor", {
+                    const user = await axios.get(`${baseURL}author/verifyAuthor`, {
                         headers: {
                             Authorization: `Bearer ${user_token}`
                         }
                     })
+                    
                     setUser({
                         is_user_logged: true,
-                        user: user
+                        user: user.data.user
                     })
 
                 } catch (error) {
                     console.log(error);
                     Cookies.remove("author_token")
+                    setUser({
+                        is_user_logged: false,
+                        user: null
+                    });
                 }
             }
 
@@ -49,7 +60,7 @@ function AuthProvider({children}) {
         
     }, [])
   return (
-    <AuthContext.Provider value={{user, setUser, loginUser} }>
+    <AuthContext.Provider value={{user, setUser, loginUser, baseURL} }>
         {children}
     </AuthContext.Provider>
   )

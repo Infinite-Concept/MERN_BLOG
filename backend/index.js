@@ -1,6 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors") 
+const path = require('path')
 require('dotenv').config()
 // router
 const contact = require("./routes/contact")
@@ -22,6 +23,7 @@ mongoose.connect('mongodb://localhost/blog', {})
 
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
+app.use('/uploads', express.static('uploads'));
 
 // Configure CORS
 app.use(cors({
@@ -29,8 +31,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-
-
 
 app.use("/contact", contact)
 app.use("/author", author)

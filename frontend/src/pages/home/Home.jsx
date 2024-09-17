@@ -29,7 +29,7 @@ function Home() {
         <div className="inner_homePage">
           <h4 className='body1'>Posted on <span>startup</span></h4>
           <h2 className='display'>Step-by-step guide to choosing great font pairs</h2>
-          <h5 className='body1'>By <NavLink to="">James West</NavLink> | <time datetime="">May 23, 2023</time></h5>
+          <h5 className='body1'>By <NavLink to="">James West</NavLink> | <time dateTime="">May 23, 2023</time></h5>
           <p className='body1'>
             Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
           </p>
@@ -47,7 +47,7 @@ function Home() {
               <img src={featureBlog} alt="blog" />
 
               <div className="dateTime">
-                <p className='label1'>By <span>John Doe</span> | <time datetime="">May, 23 2022</time></p>
+                <p className='label1'>By <span>John Doe</span> | <time dateTime="">May, 23 2022</time></p>
 
                 <h3 className='heading3'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</h3>
 
@@ -70,7 +70,17 @@ function Home() {
             <div className="allpost_item_container">
               <div className="allpost_item_content">
                 <p className='label1'>
-                  By <span>John Deo</span> | <time datetime="">Aug 23, 2021</time>
+                  By <span>John Deo</span> | <time dateTime="">Aug 23, 2021</time>
+                </p>
+
+                <h3 className='heading4'>
+                8 Figma design systems that you can download for free today.
+                </h3>
+              </div>
+
+              <div className="allpost_item_content">
+                <p className='label1'>
+                  By <span>John Deo</span> | <time dateTime="">Aug 23, 2021</time>
                 </p>
 
                 <h3 className='heading4'>
@@ -90,17 +100,7 @@ function Home() {
 
               <div className="allpost_item_content">
                 <p className='label1'>
-                  By <span>John Deo</span> | <time datetime="">Aug 23, 2021</time>
-                </p>
-
-                <h3 className='heading4'>
-                8 Figma design systems that you can download for free today.
-                </h3>
-              </div>
-
-              <div className="allpost_item_content">
-                <p className='label1'>
-                  By <span>John Deo</span> | <time datetime="">Aug 23, 2021</time>
+                  By <span>John Deo</span> | <time dateTime="">Aug 23, 2021</time>
                 </p>
 
                 <h3 className='heading4'>

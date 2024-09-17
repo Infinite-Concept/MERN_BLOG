@@ -5,10 +5,11 @@ import logo from "../../assets/icons/Logo.svg"
 import { useAuth } from '../../auth/Auth'
 
 function Header() {
-    const { user } = useAuth()
+    const { user, baseURL } = useAuth()
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
-
+    const profilePic = `${baseURL}${user?.user?.file}`
+    
     useEffect(() => {
         const handleClickOutside = (event) => {
           if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -62,7 +63,7 @@ function Header() {
                             aria-expanded={open}
                         >
                             <img
-                            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=100&h=100&q=80"
+                            src={profilePic}
                             alt="Profile"
                             className="h-8 w-8 rounded-full"
                             />
@@ -82,10 +83,13 @@ function Header() {
                             >
                             <ul>
                                 <li className="px-4 py-3 border-b hover:bg-gray-200">
-                                <Link to="/profile">My Profile</Link>
+                                    <Link to="/profile">My Profile</Link>
                                 </li>
                                 <li className="px-4 py-3 border-b hover:bg-gray-200">
-                                <Link to="/createblog">Create Post</Link>
+                                    <Link to="/createblog">Create Post</Link>
+                                </li>
+                                <li className="px-4 py-3 border-b hover:bg-gray-200">
+                                    <Link to="/listblog">List Post</Link>
                                 </li>
                                 <li className="px-4 py-3 hover:bg-gray-200">
                                 <a href="#">Log out</a>

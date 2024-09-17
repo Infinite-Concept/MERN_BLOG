@@ -15,7 +15,7 @@ function Blog() {
           <div className="part1">
             <h4 className='cap_03'>Featured Post</h4>
             <h2 className='heading2'>Step-by-step guide to choosing great font pairs</h2>
-            <h5 className='body1'>By <NavLink to="">James West</NavLink> | <time datetime="">May 23, 2023</time></h5>
+            <h5 className='body1'>By <NavLink to="">James West</NavLink> | <time dateTime="">May 23, 2023</time></h5>
 
             <p className='body1'>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
 

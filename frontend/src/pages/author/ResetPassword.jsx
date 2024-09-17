@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Modal } from 'bootstrap/dist/js/bootstrap.min';
-import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import Modal from '../../common/modal/Modal';
 
 function ResetPassword() {
 
@@ -14,6 +14,8 @@ function ResetPassword() {
     const [errors, setErrors] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [modalContent, setModalContent] = useState({ title: '', body: '' });
+    const navigate = useNavigate()
+    const success = useRef(false)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -25,23 +27,28 @@ function ResetPassword() {
       setErrors('Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one digit');
     }else if(!reset.confirmPassword){
         setErrors('Confirm password is required');
+    }else if(reset.confirmPassword != reset.password){
+        setErrors('Confirm password do not match');
     } else {
       try {
+        setErrors('');
         let password = reset.password
-        const result = await axios.post("http://localhost:3057/author/forgot-password", {password})
+        const result = await axios.post("http://localhost:3057/author/reset-password", {password, token})
+
         const response = await result.data
-        console.log(result);
 
         if(!response.status){
             setModalContent({ title: response.message , body: 'Invalid credentials' });
+            openModal();
         }else{
-            setModalContent({ title: response.message , body: 'An email has been sent to your mail, confirm and proceed with you change of password' });
+            setModalContent({ title: response.message , body: 'You have successfully changed your password, proceed to login with your new password' });
+            success.current = true
+            openModal();
         }
-        openModal();
-
+    
       } catch (error) {
         console.log(error);
-        setModalContent({ title:  "Request failed" , body: error.response.data.message });
+        setModalContent({ title: "Request failed" , body: "Internal server error. Try again later"});
         openModal();
       }
     }
@@ -52,11 +59,16 @@ function ResetPassword() {
   };
 
   const closeModal = () => {
-      setIsOpen(false);
-      setReset({
-        password: "",
-        confirmPassword: ""
-      })
+    setIsOpen(false);
+    setReset({
+    password: "",
+    confirmPassword: ""
+    })
+
+    if(success){
+        return navigate("/login-author")
+    }
+    return
   };
 
   return (
@@ -67,11 +79,11 @@ function ResetPassword() {
 
         <form action="" method="post" className='contact_form' onSubmit={handleSubmit}>
           <div className="input_group">
-            <input type="email" placeholder='Choose your password'  className='body1' name={reset.password} value={reset.password} onChange={(e) => setReset({...reset, password: e.target.value })} />
+            <input type="password" placeholder='Choose your password'  className='body1' name={reset.password} value={reset.password} onChange={(e) => setReset({...reset, password: e.target.value })} />
           </div>
 
           <div className="input_group">
-            <input type="email" placeholder='Confirm your password'  className='body1' name={reset.confirmPassword} value={reset.confirmPassword} onChange={(e) => setReset({...reset, confirmPassword: e.target.value })} />
+            <input type="password" placeholder='Confirm your password'  className='body1' name={reset.confirmPassword} value={reset.confirmPassword} onChange={(e) => setReset({...reset, confirmPassword: e.target.value })} />
             {errors && <p className="error">{errors}</p>}
           </div>
 
