@@ -6,7 +6,7 @@ const multerConfig = require("../lib/multer")
 
 const upload = multerConfig("uploads/blogImage/")
 
-router.get("/", async (req, res) => {
+router.get("/getAll", async (req, res) => {
     try {
         let blog = await Blog.find()
         res.status(200).json({blog})
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 
 router.post("/create", upload.single("file"), async (req, res) => {
     try {
-        const { title, category, content, userId} = req.body;
+        const { title, category, content, description, userId} = req.body;
         const file = req.file;
 
         if (!file) {
@@ -40,6 +40,7 @@ router.post("/create", upload.single("file"), async (req, res) => {
             title,
             category,
             content,
+            description,
             authorID: userId,
             mainImage: file.path 
         });
@@ -50,6 +51,31 @@ router.post("/create", upload.single("file"), async (req, res) => {
             status: true,
             message: "Blog post created successfully"
         })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Internal server error. Try again later"})
+    }
+})
+
+router.post("/author_Blog", async (req, res) => {
+    try {
+        const {userId} = req.body;
+
+        const authorId = mongoose.Types.ObjectId.createFromHexString(userId);
+
+        let author = await Blog.find({authorId})
+
+        if(!author){
+            return res.json({ 
+                status: false,
+                message: "Author not found" });
+        }
+        
+        res.json({
+            status: true,
+            message: author
+        })
+        
     } catch (error) {
         console.log(error);
         res.status(500).json({message: "Internal server error. Try again later"})

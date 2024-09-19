@@ -14,6 +14,10 @@ const blogPostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     content:{
         required: true,
         type: String
