@@ -24,8 +24,32 @@ router.get("/", async(req, res) => {
 const authorSchema = Joi.object({
     fullName: Joi.string().min(3).max(30).required(),
     password: Joi.string().min(5).required().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+    confirm_password: Joi.any().valid(Joi.ref('password')).required().messages({
+        'any.only': 'Passwords do not match'
+    }),
     email: Joi.string().required().email(),
     profession: Joi.string().min(10).required(),
+    bio: Joi.string().min(10).required(),
+    facebook: Joi.string().min(10).required(),
+    instagram: Joi.string().min(10).required(),
+    twitter: Joi.string().min(10).required(),
+    linkedin: Joi.string().min(10).required()
+})
+
+const authorPassword = Joi.object({
+    id: Joi.string().required(),
+    old_password: Joi.string().required(),
+    password: Joi.string().min(5).required().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+    confirm_password: Joi.any().valid(Joi.ref('password')).required().messages({
+        'any.only': 'Passwords do not match'
+    }),
+})
+
+const updateAuthor = Joi.object({
+    id: Joi.string().required(),
+    fullName: Joi.string().min(3).max(30).required(),
+    profession: Joi.string().min(10).required(),
+    bio: Joi.string().min(10).required(),
     facebook: Joi.string().min(10).required(),
     instagram: Joi.string().min(10).required(),
     twitter: Joi.string().min(10).required(),
@@ -39,17 +63,19 @@ router.post("/register", upload.single('file'), async (req, res) => {
         const{error, value} = authorSchema.validate(req.body)
 
         if(error){
-            res.status(404).json({ error: error.details[0].message })
+            return res.json({
+                status: false,
+                message: error.details[0].message })
         }
 
-        // if (!req.file) {
-        //     return res.status(400).json({ error: "File is required" });
-        // }
+        if (!req.file) {
+            return res.json({status: false, message: "File is required" });
+        }
 
         const existingUser = await Author.findOne({ email: value.email  });
 
         if (existingUser) {
-            return res.status(400).json({ message: "Email already registered" });
+            return res.json({status: false, message: "Email already registered" });
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -64,6 +90,7 @@ router.post("/register", upload.single('file'), async (req, res) => {
             email: value.email,
             password: hashedPassword,
             profession: value.profession,
+            bio: value.bio,
             social: {
                 facebook: value.facebook,
                 instagram: value.instagram,
@@ -82,7 +109,7 @@ router.post("/register", upload.single('file'), async (req, res) => {
 
         sendVerificationEmail(savedUser.email, "Email Verification", subject )
 
-        res.status(201).json({ message: 'User registered successfully' });
+        res.json({ status: true, message: 'User registered successfully' });
 
     }catch(err){
         console.log(err);
@@ -146,7 +173,9 @@ router.post("/login", async (req, res) => {
 
         res.json({ 
             status: true,
-            accessToken: accessToken })
+            accessToken: accessToken,
+            message: user
+         })
 
     }catch(err){
         console.error(err);
@@ -172,7 +201,7 @@ const verifyUser = async(req, res, next) => {
 
 router.get("/verifyAuthor", verifyUser, async (req, res) => {
     try {
-        const user = await Author.findById(req.userId).select('-password -createdDate -forgetToken -verified');
+        const user = await Author.findById(req.userId).select('-password -forgetToken -verified');
 
         if (!user) {
             return res.status(404).json({ status: false, message: "User not found" });
@@ -251,6 +280,99 @@ router.post("/reset-password", async(req, res) => {
         console.log(err);
         res.status(500).json({message: "Internal server error. Try again later"})
     }
+})
+
+router.put("/profile", upload.single('file'), async (req, res) => {
+    try{
+        const{error, value} = updateAuthor.validate(req.body)
+
+        console.log(req.body);
+
+        if(error){
+            return res.json({
+                status: false,
+                message: error.details[0].message })
+        }
+
+        if (!req.file) {
+            return res.json({
+                status: false,
+                message: "File is required"
+            });
+        }
+
+        const existingUser = await Author.findOne({ _id: value.id });
+
+        if (!existingUser) {
+            return res.json({status: false, message: "unable to change user data" });
+        }
+        
+        // Update the user's data
+        existingUser.fullName = value.fullName || existingUser.fullName;
+        existingUser.profession = value.profession || existingUser.profession;
+        existingUser.bio = value.bio || existingUser.bio;
+        existingUser.social = {
+            facebook: value.facebook || existingUser.social.facebook,
+            instagram: value.instagram || existingUser.social.instagram,
+            twitter: value.twitter || existingUser.social.twitter,
+            linkedin: value.linkedin || existingUser.social.linkedin,
+        };
+        existingUser.file = req.file.path;
+
+        await existingUser.save()
+
+        res.json({ status: true, message: 'Profile successfully changed'});
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({message: "Internal server error"})
+    }
+        
+})
+
+router.put("/password", async (req, res) => {
+    try{
+        const{error, value} = authorPassword.validate(req.body)
+
+        if(error){
+            return res.json({
+                status: false,
+                message: error.details[0].message })
+        }
+
+        const existingUser = await Author.findOne({ _id: value.id });
+
+        if (!existingUser) {
+            return res.json({status: false, message: "no user found" });
+        }
+
+        let OldPassword = await bcrypt.compare(value.old_password, existingUser.password)
+        console.log(OldPassword);
+        
+        if(!OldPassword){
+            return res.json({
+                status: false,
+                message: "invalid password"})
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(value.password, salt)
+
+        if(!hashedPassword){
+            return res.status(500).json({ message: "Internal server error" });
+        } 
+        
+        existingUser.fullName = value.hashedPassword
+
+        await existingUser.save()
+
+        res.json({ status: true, message: 'Password successfully changed'});
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({message: "Internal server error"})
+    }
+        
 })
 
 module.exports = router

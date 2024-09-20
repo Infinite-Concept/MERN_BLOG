@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios"
 import Modal from '../../common/modal/Modal';
 import { useAuth } from '../../auth/Auth';
+import Input from '../../components/form/Input';
 
 function CreateAuthor() {
 
@@ -11,7 +12,9 @@ function CreateAuthor() {
     fullName: '',
     email: '',
     password: '',
+    confirm_password: '',
     profession: '',
+    bio: '',
     facebook: '',
     instagram: '',
     twitter: '',
@@ -19,10 +22,9 @@ function CreateAuthor() {
     file: null
   })
   const [errors, setErrors] = useState({});
-  const [isOpen, setIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', body: '' });
 
-  const { user } = useAuth()
+  const { user, closeModal, openModal, isOpen} = useAuth()
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,25 +49,6 @@ function CreateAuthor() {
     setErrors(prevErrors => ({ ...prevErrors, file: '' }));
   }
 
-  const openModal = () => {
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-      setIsOpen(false);
-      setContactForm({
-        fullName: '',
-        email: '',
-        password: '',
-        profession: '',
-        facebook: '',
-        instagram: '',
-        twitter: '',
-        linkedin: '',
-        file: null
-      })
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -88,8 +71,18 @@ function CreateAuthor() {
       errors.password = 'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one digit';
     }
 
+    if (!contactForm.confirm_password) {
+      errors.confirm_password = 'Confirm your password';
+    } else if(contactForm.confirm_password !== contactForm.password){
+      errors.confirm_password = 'Password do not match';
+    }
+
     if (!contactForm.profession) {
       errors.profession = 'add your profession';
+    } 
+
+    if (!contactForm.bio) {
+      errors.bio = 'add your bio';
     } 
 
     if (!contactForm.facebook) {
@@ -133,14 +126,25 @@ function CreateAuthor() {
         })
 
         const result = await response.data
-        if(response.status >= 400 ){
-          setModalContent({ title: response.response.data.error , body: 'Unable to register user' });
-          openModal();
-        } else if(response.code == "ERR_BAD_REQUEST" ){
-          setModalContent({ title: response.data.message , body: 'Unable to register user' });
+        
+        if(!result.status){
+          setModalContent({ title: result.message , body: 'Unable to register user' });
           openModal();
         }else{
           setModalContent({ title: result.message , body: 'Registration successful, a message has been sent to your email, verify your email before you can login' });
+          setContactForm({
+            fullName: '',
+            email: '',
+            password: '',
+            confirm_password: '',
+            profession: '',
+            bio: '',
+            facebook: '',
+            instagram: '',
+            twitter: '',
+            linkedin: '',
+            file: null
+          })
           openModal();
         }
 
@@ -159,53 +163,39 @@ function CreateAuthor() {
         <p className='body1'>join us for free</p>
 
         <form action="" method="post" className='contact_form' onSubmit={handleSubmit} encType="multipart/form-data">
-          <div className="input_group">
-            <input type="text" placeholder='Full Name'  className='body1' name="fullName" value={contactForm.fullName} onChange={handleChange} />
-            {errors.fullName && <p className="error">{errors.fullName}</p>}
-          </div>
+
+          <Input label='Enter your full name' name='fullName' type='text' errors={errors.fullName} handleFileChange={handleChange} placeholder='Full Name' value={contactForm.fullName} />
+
+          <Input label='Enter your email address' name='email' type='email' errors={errors.email} handleFileChange={handleChange} placeholder='Email address'  value={contactForm.email} />
+
+          <Input label='Enter your profession' name='profession' type='text' errors={errors.profession} handleFileChange={handleChange} placeholder='Profession' value={contactForm.profession} />
+
+          <Input label='Choose your password' name='password' type='password' errors={errors.password} handleFileChange={handleChange} placeholder='Choose password' value={contactForm.password} />
+
+          <Input label='Confirm your password' name='confirm_password' type='password' errors={errors.confirm_password} handleFileChange={handleChange} placeholder='Confirm password' value={contactForm.confirm_password} />
 
           <div className="input_group">
-            <input type="text" placeholder='Your Email'  className='body1' name="email" value={contactForm.email} onChange={handleChange} />
-            {errors.email && <p className="error">{errors.email}</p>}
+            <label htmlFor="bio">Enter your bio</label>
+            <textarea className='body1' placeholder='Bio' name="bio" id="bio" value={contactForm.bio} onChange={handleChange}></textarea>
+            {errors.bio && <p className="error">{errors.bio}</p>}
           </div>
 
-          <div className="input_group">
-            <input type="password" placeholder='Enter your password'  className='body1' name="password" value={contactForm.password} onChange={handleChange} />
-            {errors.password && <p className="error">{errors.password}</p>}
-          </div>
+          <Input label='Enter your facebook url' name='facebook' type='url' errors={errors.facebook} handleFileChange={handleChange} placeholder='Facebook URL' value={contactForm.facebook} />
+
+          <Input label='Enter your instagram url' name='instagram' type='url' errors={errors.instagram} handleFileChange={handleChange} placeholder='Instagram URL' value={contactForm.instagram} />
+
+          <Input label='Enter your twitter url' name='twitter' type='url' errors={errors.twitter} handleFileChange={handleChange} placeholder='Twitter URL' value={contactForm.twitter} />
+
+          <Input label='Enter your linkedin url' name='linkedin' type='url' errors={errors.linkedin} handleFileChange={handleChange} placeholder='Linkedin URL' value={contactForm.linkedin} />
 
           <div className="input_group">
-            <input type="text" placeholder='Profession'  className='body1' name="profession" value={contactForm.profession} onChange={handleChange} />
-            {errors.profession && <p className="error">{errors.profession}</p>}
-          </div>
-
-          <div className="input_group">
-            <input type="url" placeholder='Facebook link'  className='body1' name="facebook" value={contactForm.facebook} onChange={handleChange} />
-            {errors.facebook && <p className="error">{errors.facebook}</p>}
-          </div>
-
-          <div className="input_group">
-            <input type="url" placeholder='Instagram link'  className='body1' name="instagram" value={contactForm.instagram} onChange={handleChange} />
-            {errors.instagram && <p className="error">{errors.instagram}</p>}
-          </div>
-
-          <div className="input_group">
-            <input type="url" placeholder='twitter link'  className='body1' name="twitter" value={contactForm.twitter} onChange={handleChange} />
-            {errors.twitter && <p className="error">{errors.twitter}</p>}
-          </div>
-
-          <div className="input_group">
-            <input type="url" placeholder='Linkedin link'  className='body1' name="linkedin" value={contactForm.linkedin} onChange={handleChange} />
-            {errors.linkedin && <p className="error">{errors.linkedin}</p>}
-          </div>
-
-          <div className="input_group">
-            <input type="file" placeholder='Linkedin link'  className='body1' name="file" onChange={handleFileChange} accept='image/png, image/jpeg'/>
+            <label htmlFor="file">Choose your profile picture</label>
+            <input type="file" placeholder='Linkedin link'  className='body1' name="file" onChange={handleFileChange} accept='image/png, image/jpeg' id='file'/>
             {errors.file && <p className="error">{errors.file}</p>}
           </div>
 
           <div className="input_submit">
-            <input type="submit" value="Join now" />
+            <input type="submit" value="Join Now" />
           </div>
         </form>
 
@@ -215,10 +205,7 @@ function CreateAuthor() {
       </div>
 
       {isOpen && (
-        <Modal isOpen={isOpen} onClose={closeModal}>
-          <h2>{modalContent.title}</h2>
-          <p>{modalContent.body}</p>
-        </Modal>
+        <Modal isOpen={isOpen} onClose={closeModal} title={modalContent.title} body={modalContent.body}  />
       )}
     </section>
   )

@@ -4,6 +4,7 @@ import axios from "axios"
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../common/modal/Modal';
 import { useAuth } from '../../auth/Auth';
+import Input from '../../components/form/Input';
 
 function LoginAuthor() {
   const[contactForm, setContactForm] = useState({
@@ -11,9 +12,8 @@ function LoginAuthor() {
     password: ""
   })
   const [errors, setErrors] = useState({});
-  const [isOpen, setIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', body: '' });
-  const { loginUser, user } = useAuth()
+  const { loginUser, user, closeModal, openModal, isOpen } = useAuth()
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,18 +29,6 @@ function LoginAuthor() {
 
     setErrors(prevErrors => ({ ...prevErrors, [name]: '' }));
   }
-
-  const closeModal = () => {
-    setIsOpen(false);
-    setContactForm({
-      ...contactForm,
-      password: ''
-    })
-  };
-
-  const openModal = () => {
-    setIsOpen(true);
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -66,10 +54,15 @@ function LoginAuthor() {
         if(!response.status){
           setModalContent({ title: response.message, body: 'Invalid credentails Please try again later.' });
           openModal()
-          console.log(response);
+
+          setContactForm({
+            ...contactForm,
+            password: ''
+          })
         }else{
-          const userdata = response.accessToken
-          loginUser(userdata)
+          const token = response.accessToken
+          const userdata = response.message
+          loginUser(token, userdata, navigate)
         }
 
       } catch (error) {
@@ -87,15 +80,10 @@ function LoginAuthor() {
         <p className='body1'>Log in to your &#123;finsweet</p>
 
         <form action="" method="post" className='contact_form' onSubmit={handleSubmit}>
-          <div className="input_group">
-            <input type="email" placeholder='Your Email'  className='body1' name='email' value={contactForm.email} onChange={handleChange} />
-            {errors.email && <p className="error">{errors.email}</p>}
-          </div>
 
-          <div className="input_group">
-            <input type="password" placeholder='Enter your password'  className='body1' name='password' value={contactForm.password} onChange={handleChange} />
-            {errors.password && <p className="error">{errors.password}</p>}
-          </div>
+          <Input label='Enter your email address' name='email' type='email' errors={errors.email} handleFileChange={handleChange} placeholder='Email address' value={contactForm.email} />
+
+          <Input label='Choose your password' name='password' type='password' errors={errors.password} handleFileChange={handleChange} placeholder='Choose password' value={contactForm.password} />
 
           <div className="forgetPassword">
             <Link to="/forgot-password" >forgot password?</Link>
@@ -112,10 +100,7 @@ function LoginAuthor() {
       </div>
 
       {isOpen && (
-        <Modal isOpen={isOpen} onClose={closeModal}>
-          <h2>{modalContent.title}</h2>
-          <p>{modalContent.body}</p>
-        </Modal>
+        <Modal isOpen={isOpen} onClose={closeModal} title={modalContent.title} body={modalContent.body} />
       )}
     </section>
   )

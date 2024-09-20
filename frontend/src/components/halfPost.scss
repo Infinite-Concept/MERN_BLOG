@@ -40,15 +40,21 @@
 
 .createBlogForm{
 
+    label{
+        font-size: 14px;
+        font-style: italic;
+        text-transform: capitalize;
+        margin-bottom: 5px;
+    }
+
     .input_group{
-        width: '100%';
-        padding: 10px 20px;
-        margin-bottom: 20px;
-        border: 1px solid rgba(222, 216, 215, 0.4);
+        margin-bottom: 15px;
 
         input{
             width: 100%;
-            border: none;
+            border: 1px solid #5a5a5a52;
+            height: 50px;
+            padding: 10px 15px;
             outline: none;
         }
 
@@ -56,13 +62,34 @@
             width: 100%;
             background: transparent;
             outline: none;
-            border: none;
+            border: 1px solid #5a5a5a52;
+            padding: 10px 15px;
+        }
+
+        textarea{
+            width: 100%;
+            border: 1px solid #5a5a5a52;
+            height: 144px;
+            resize: none;
+            padding: 20px;
+        }
+
+        .error{
+            color: rgba(255, 53, 53, 0.61);
+            text-align: start;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 2px;
+            text-transform: capitalize;
+            letter-spacing: -1px;
+            font-family: "Inter", sans-serif;
+            margin-bottom: 15px;
         }
     }
 
-    .input_group + p{
-        color: rgba(255, 0, 0, 0.712);
-        margin-top: -13px;
-        font-size: 12px;
-    }
+    // .input_group + p{
+    //     color: rgba(255, 0, 0, 0.712);
+    //     margin-top: -13px;
+    //     font-size: 12px;
+    // }
 }

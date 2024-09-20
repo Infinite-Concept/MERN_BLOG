@@ -77,3 +77,21 @@
         }
     }
 }
+
+.createBlog {
+    .input_group{
+        textarea{
+            width: 100%;
+            outline: none;
+            border: none;
+            min-height: 100px;
+        }
+
+        select{
+            color: var(--medium-grey);
+        }
+    }
+}
+
+
+

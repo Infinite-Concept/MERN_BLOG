@@ -4,6 +4,9 @@ import 'react-quill/dist/quill.snow.css';
 import ImageResize from 'quill-image-resize-module-react';
 import axios from "axios"
 import { useAuth } from '../auth/Auth';
+import Modal from '../common/modal/Modal';
+import { useNavigate } from 'react-router-dom';
+import Input from './form/Input';
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -12,19 +15,20 @@ function EditorComponent() {
   const [blog, setBlog] = useState({
     title: '',
     category: '',
+    description: '',
     content: '',
     file: null
   });
-  const {user, baseURL} = useAuth()
+  const {user, baseURL, closeModal, openModal, isOpen} = useAuth()
+  const navigate = useNavigate()
+  const [modalContent, setModalContent] = useState({ title: '', body: '' });
 
   let authorId = user?.user?._id;
   
 
   const handleTitleChange = (e) => {
     const {name, value} = e.target
-
     setBlog({ ...blog, [name]: value })
-
     setError(prevErrors => ({ ...prevErrors, [name]: '' }));
   };
 
@@ -57,8 +61,12 @@ function EditorComponent() {
       errors.category = "Category is required"
     }
 
+    if(!blog.description){
+      errors.description = "Description is required"
+    }
+
     if (!blog.file) {
-      errors.file = "file is required";
+      errors.file = "File is required";
     }
 
     if (Object.keys(errors).length > 0) {
@@ -70,18 +78,28 @@ function EditorComponent() {
         const formData = new FormData();
         formData.append("title", blog.title);
         formData.append("category", blog.category);
+        formData.append("description", blog.description);
         formData.append("file", blog.file);
         formData.append("content", blog.content);
         formData.append("userId", authorId);
   
-        // console.log(data);
         const response = await axios.post(`${baseURL}post/create`, formData)
-        console.log(response);
+        const result = await response.data
+
+        console.log(result);
         
-        // setTitle({ title: '', category: '' });
+        
+        if(!result.status){
+          setModalContent({ title: result.message , body: 'Invalid credentials' });
+        }else{
+          setModalContent({ title: result.message , body: 'You have successfully added a blog' });
+        }
+        openModal();
 
       } catch (error) {
         console.error('Error saving post:', error);
+        setModalContent({ title: 'Request failed', body: error.response.data.message });
+        openModal();
       }
     }
 
@@ -92,37 +110,39 @@ function EditorComponent() {
 
       <form className='createBlogForm' action="" method="post" encType='multipart/form-data' onSubmit={handleSave}>
 
-        <div className='input_group'>
-          <input
-            type="text"
-            placeholder="Enter title..."
-            name='title'
-            value={blog.title}
-            onChange={handleTitleChange}
-          />
-        </div>
-        {error.title && <p>{error.title}</p>}
+        <Input label='Enter blog title' name='title' type='text' errors={error.title} handleFileChange={handleTitleChange} placeholder='Enter title...' value={blog.title} />
 
         <div className='input_group'>
-          <select name="category" defaultValue="" onChange={handleTitleChange}>
+          <label htmlFor="category">Select blog category</label>
+          <select name="category" defaultValue="" onChange={handleTitleChange} id='category'>
             <option disabled value="">Choose category</option>
             <option value="business">Business</option>
             <option value="startup">Startup</option>
             <option value="economy">Economy</option>
             <option value="technology">Technology</option>
           </select>
+          {error.category && <p className='error'>{error.category}</p>}
         </div>
-        {error.category && <p>{error.category}</p>}
 
         <div className='input_group'>
+          <label htmlFor="description">Write blog description</label>
+          <textarea name="description" id="description" placeholder="Enter description..." value={blog.description}
+            onChange={handleTitleChange} ></textarea>
+            {error.description && <p className='error'>{error.description}</p>}
+        </div>
+
+        <div className='input_group'>
+          <label htmlFor="file">Choose blog image</label>
           <input
             type="file"
             name="file"
+            id='file'
             onChange={handleFileChange}
           />  
+          {error.file && <p className='error'>{error.file}</p>}
         </div>
-        {error.file && <p>{error.file}</p>}
 
+        <label htmlFor="">Write blog Content</label>
         <ReactQuill
           theme="snow"
           value={blog.content}
@@ -139,24 +159,27 @@ function EditorComponent() {
         />
 
       </form>
+
+      {isOpen && (
+        <Modal isOpen={isOpen} onClose={closeModal} title={modalContent.title} body={modalContent.body}  />
+      )}
+
     </section>
   )
 }
 
 EditorComponent.modules = {
   toolbar: [
-      [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-      [{ size: [] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [
-        { list: 'ordered' },
-        { list: 'bullet' },
-        { indent: '-1' },
-        { indent: '+1' }
-      ],
-      ['link', 'image', 'video'],
-      [{ 'color': [] }, { 'background': [] }],
-      ['clean'],
+    [{ 'font': [] }],
+    [{ size: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{ align: [] }],
+    [{ list: 'ordered'}, { list: 'bullet' }],
+    [{ indent: '-1'}, { indent: '+1' }],
+    ['link', 'image', 'video'],
+    [{ 'color': [] }, { 'background': [] }],
+    ['clean'],
   ],
   clipboard: {
       // toggle to add extra line breaks when pasting HTML:
@@ -169,7 +192,7 @@ EditorComponent.modules = {
 };
 
 EditorComponent.formats = [
-  'header', 'font', 'size',
+  'header', 'font', 'size', 'align',
   'bold', 'italic', 'underline', 'strike', 'blockquote',
   'list', 'bullet','indent', 'link', 'image', 'video',
   'color', 'background',

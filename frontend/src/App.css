@@ -37,6 +37,10 @@ section{
   padding: 0 60px;
 }
 
+::placeholder, input:not([type='submit']), textarea{ 
+  color: var(--medium-grey) !important;
+}
+
 /* common font  */
 .label1,
 .body2,

@@ -19,6 +19,7 @@
         color: var(--black-blue);
         text-align: center;
     }
+
     .contact_form{
         width: 100%;
         margin-top: 40px;
@@ -41,16 +42,21 @@
             }
         }
 
-        
-
         .input_group{
-            margin-bottom: 13px;
+            margin-bottom: 15px;
+
+            label{
+                font-size: 14px;
+                font-style: italic;
+                text-transform: capitalize;
+                margin-bottom: 5px;
+            }
 
             input{
                 width: 100%;
                 border: 1px solid #5a5a5a52;
                 height: 50px;
-                padding: 20px;
+                padding: 10px 15px;
                 outline: none;
             }
 
@@ -65,9 +71,9 @@
             .error{
                 color: rgba(255, 53, 53, 0.61);
                 text-align: start;
-                font-size: 16px;
+                font-size: 12px;
                 font-weight: 500;
-                margin-top: 7px;
+                margin-top: 5px;
                 text-transform: capitalize;
                 letter-spacing: -1px;
                 font-family: "Inter", sans-serif;
@@ -103,4 +109,149 @@
         }
     }
 
+}
+
+.authorProfile {
+    width: 100%;
+    height: auto;
+    position: relative;
+    
+    .card {
+        width: 350px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        transition: all 0.5s;
+    }
+    
+    .image img {
+        transition: all 0.5s
+    }
+    
+    .container_profileImage {
+        height: 140px;
+        width: 140px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .profileImage{
+            height: 140px;
+            width: 140px;
+        }
+    }
+    
+    .name {
+        font-size: 22px;
+        font-weight: bold
+    }
+    
+    .idd {
+        font-size: 14px;
+        font-weight: 600
+    }
+    
+    .idd1 {
+        font-size: 12px
+    }
+    
+    .number {
+        font-size: 22px;
+        font-weight: bold
+    }
+    
+    .follow {
+        font-size: 12px;
+        font-weight: 500;
+        color: #444444
+    }
+    
+    .btn1 {
+        height: 40px;
+        width: 150px;
+        border: none;
+        background-color: #000;
+        color: #aeaeae;
+        font-size: 15px
+    }
+    
+    .text span {
+        font-size: 13px;
+        color: #545454;
+        font-weight: 500
+    }
+    
+    hr .new1 {
+        border: 1px solid
+    }
+    
+    .join {
+        font-size: 14px;
+        color: #a0a0a0;
+        font-weight: bold
+    }
+    
+    .date {
+        background-color: #ccc
+    }
+
+    .icons{
+        span{
+            a{
+                font-size: 18px;
+                color: var(--black-blue);
+            }
+        }
+    }
+
+    form{
+        margin-bottom: 40px;
+    }
+
+    .change_password{
+        margin-top: 20px;
+
+        button{
+            color: var(--black-blue);
+            text-transform: capitalize;
+
+            &:hover{
+                text-decoration: 1px underline var(--black-blue);
+            }
+        }
+    }
+
+    .showPassword{
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+    }
+
+    .profileModal{
+        .createAuthor{
+            padding-top: 0;
+
+            .contact_form{
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+        }
+
+        .modal-body{
+            // height: 320px;
+        }
+
+        .white_btn--container{
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+            .white_btn{
+                background-color: var(--yellow);
+            }
+        }
+        
+    }
 }

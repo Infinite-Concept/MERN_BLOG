@@ -2,7 +2,7 @@ import React from 'react'
 import {faXmark} from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function Modal({ isOpen, onClose, children }) {
+function Modal({ isOpen, onClose, title, body }) {
 
     const overlayStyle = {
         display: isOpen ? 'block' : 'none',
@@ -32,7 +32,8 @@ function Modal({ isOpen, onClose, children }) {
       <div style={overlayStyle} onClick={onClose}></div>
       <div style={modalStyle}>
         <button onClick={onClose} style={{textAlign: "right", background: "transparent", marginBottom: "20px", display: "flex", justifyContent: "end", alignItems: "end"}}><FontAwesomeIcon icon={faXmark} size='lg' /></button>
-        {children}
+        <h2>{title}</h2>
+        <p>{body}</p>
       </div>
     </div>
   )
