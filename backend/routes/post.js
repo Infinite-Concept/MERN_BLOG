@@ -57,7 +57,7 @@ router.post("/create", upload.single("file"), async (req, res) => {
     }
 })
 
-router.post("/author_Blog", async (req, res) => {
+router.get("/author_Blog", async (req, res) => {
     try {
         const {userId} = req.body;
 

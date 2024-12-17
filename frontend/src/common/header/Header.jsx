@@ -10,9 +10,6 @@ function Header() {
     const dropdownRef = useRef(null);
     const profilePic = `${baseURL}${user?.user?.file}`
     const navigate = useNavigate()
-    console.log(user.user);
-    
-    
     useEffect(() => {
         const handleClickOutside = (event) => {
           if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -85,17 +82,17 @@ function Header() {
                             style={{ zIndex: 10 }}
                             >
                             <ul>
-                                <li className="px-4 py-3 border-b hover:bg-gray-200">
-                                    <Link to="/profile">My Profile</Link>
+                                <li >
+                                    <Link to="/profile" className="px-4 py-3 border-b hover:bg-gray-200">My Profile</Link>
                                 </li>
-                                <li className="px-4 py-3 border-b hover:bg-gray-200">
-                                    <Link to="/createblog">Create Post</Link>
+                                <li>
+                                    <Link to="/createblog" className="px-4 py-3 border-b hover:bg-gray-200" >Create Post</Link>
                                 </li>
-                                <li className="px-4 py-3 border-b hover:bg-gray-200">
-                                    <Link to="/listblog">List Post</Link>
+                                <li>
+                                    <Link to="/listblog" className="px-4 py-3 border-b hover:bg-gray-200">List Post</Link>
                                 </li>
-                                <li className="px-4 py-3 hover:bg-gray-200">
-                                    <button href="" onClick={() => logout(navigate)}>Log out</button>
+                                <li>
+                                    <button onClick={() => logout(navigate)} className="px-4 py-3 border-b hover:bg-gray-200">Log out</button>
                                 </li>
                             </ul>
                             </div>

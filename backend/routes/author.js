@@ -1,5 +1,4 @@
 const router = require("express").Router()
-const Joi = require("joi")
 const multer = require("multer")
 const AuthorDetails = require("../models/author")
 const Author = require("../models/author")
@@ -8,6 +7,7 @@ const crypto = require("crypto")
 const sendVerificationEmail = require("../lib/email")
 const multerConfig = require("../lib/multer")
 const jwt = require("jsonwebtoken")
+const {authorPassword, authorSchema, updateAuthor} = require('../validation/joi')
 
 const upload = multerConfig("uploads/authorPic/")
 const secretKey = process.env.ACCESS_TOKEN_SECRET;
@@ -19,41 +19,6 @@ router.get("/", async(req, res) => {
     } catch (error) {
         res.status(500).json({message: "Error fetching authors"})
     }
-})
-
-const authorSchema = Joi.object({
-    fullName: Joi.string().min(3).max(30).required(),
-    password: Joi.string().min(5).required().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
-    confirm_password: Joi.any().valid(Joi.ref('password')).required().messages({
-        'any.only': 'Passwords do not match'
-    }),
-    email: Joi.string().required().email(),
-    profession: Joi.string().min(10).required(),
-    bio: Joi.string().min(10).required(),
-    facebook: Joi.string().min(10).required(),
-    instagram: Joi.string().min(10).required(),
-    twitter: Joi.string().min(10).required(),
-    linkedin: Joi.string().min(10).required()
-})
-
-const authorPassword = Joi.object({
-    id: Joi.string().required(),
-    old_password: Joi.string().required(),
-    password: Joi.string().min(5).required().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
-    confirm_password: Joi.any().valid(Joi.ref('password')).required().messages({
-        'any.only': 'Passwords do not match'
-    }),
-})
-
-const updateAuthor = Joi.object({
-    id: Joi.string().required(),
-    fullName: Joi.string().min(3).max(30).required(),
-    profession: Joi.string().min(10).required(),
-    bio: Joi.string().min(10).required(),
-    facebook: Joi.string().min(10).required(),
-    instagram: Joi.string().min(10).required(),
-    twitter: Joi.string().min(10).required(),
-    linkedin: Joi.string().min(10).required()
 })
 
 router.post("/register", upload.single('file'), async (req, res) => {
@@ -286,25 +251,16 @@ router.put("/profile", upload.single('file'), async (req, res) => {
     try{
         const{error, value} = updateAuthor.validate(req.body)
 
-        console.log(req.body);
-
         if(error){
             return res.json({
                 status: false,
                 message: error.details[0].message })
         }
 
-        if (!req.file) {
-            return res.json({
-                status: false,
-                message: "File is required"
-            });
-        }
-
         const existingUser = await Author.findOne({ _id: value.id });
 
         if (!existingUser) {
-            return res.json({status: false, message: "unable to change user data" });
+            return res.json({status: false, message: "No user found" });
         }
         
         // Update the user's data
@@ -317,11 +273,13 @@ router.put("/profile", upload.single('file'), async (req, res) => {
             twitter: value.twitter || existingUser.social.twitter,
             linkedin: value.linkedin || existingUser.social.linkedin,
         };
-        existingUser.file = req.file.path;
+        if (req.file) {
+            existingUser.file = req.file.path;
+        }
 
         await existingUser.save()
 
-        res.json({ status: true, message: 'Profile successfully changed'});
+        res.json({ status: true, message: 'Profile successfully changed', user : existingUser});
 
     }catch(err){
         console.log(err);
@@ -347,8 +305,6 @@ router.put("/password", async (req, res) => {
         }
 
         let OldPassword = await bcrypt.compare(value.old_password, existingUser.password)
-        console.log(OldPassword);
-        
         if(!OldPassword){
             return res.json({
                 status: false,
@@ -362,7 +318,7 @@ router.put("/password", async (req, res) => {
             return res.status(500).json({ message: "Internal server error" });
         } 
         
-        existingUser.fullName = value.hashedPassword
+        existingUser.password = hashedPassword
 
         await existingUser.save()
 

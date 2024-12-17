@@ -4,7 +4,7 @@ import EditorComponent from '../../components/EditorComponent';
 function CreateBlog() {
 
   return (
-    <section style={{padding: "50px"}} className='createBlog'>
+    <section className='createBlog'>
       <EditorComponent />
     </section>
   )

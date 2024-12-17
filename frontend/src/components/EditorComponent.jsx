@@ -110,6 +110,7 @@ function EditorComponent() {
 
       <form className='createBlogForm' action="" method="post" encType='multipart/form-data' onSubmit={handleSave}>
 
+        <h2>Create Blog Post</h2>
         <Input label='Enter blog title' name='title' type='text' errors={error.title} handleFileChange={handleTitleChange} placeholder='Enter title...' value={blog.title} />
 
         <div className='input_group'>

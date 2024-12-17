@@ -2,16 +2,15 @@ import React, { useState } from 'react'
 import { useAuth } from '../../auth/Auth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faTwitter, faFacebookF, faLinkedinIn } from '@fortawesome/free-brands-svg-icons'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import Input from '../../components/form/Input';
-import Modal from '../../common/modal/Modal';
 import axios from 'axios';
 
 function Profile() {
 
-  const {user, baseURL, closeModal, openModal, isOpen} = useAuth()
+  const {user, baseURL, setUser} = useAuth()
   let author = user.user
   const [showEdit, setShowEdit] = useState(true)
-  const [showPassword, setShowPassword] = useState(false)
   const[profileData, setProfileData] = useState({
     fullName: author.fullName,
     profession: author.profession,
@@ -22,6 +21,7 @@ function Profile() {
     linkedin: author.social.linkedin,
     file: ''
   })
+
   const[changePassword, setChangePassword] = useState({
     old_password: '',
     password: '',
@@ -34,8 +34,6 @@ function Profile() {
     message : '',
     stat: false
   });
-
-  const [modalContent, setModalContent] = useState({ title: '', body: '' });
 
   const handleChange = (event) => {
     const {name, value} = event.target
@@ -65,8 +63,8 @@ function Profile() {
     setShowEdit(false)
   }
 
-  const showPasswordHandle = () => {
-    setShowPassword(true)
+  const hideHandle = () => {
+    setShowEdit(true)
   }
 
   const handleSubmit = async (event) => {
@@ -115,19 +113,25 @@ function Profile() {
       return;
     } else {
       try {
-        const updatedProfile = {
-          id: author._id,
-          fullName: profileData.fullName || author.fullName,
-          profession: profileData.profession || author.profession,
-          bio: profileData.bio || author.bio,
-          facebook: profileData.facebook || author.social.facebook,
-          instagram: profileData.instagram || author.social.instagram,
-          twitter: profileData.twitter || author.social.twitter,
-          linkedin: profileData.linkedin || author.social.linkedin,
-          file: profileData.file || author.file, 
-        };
+        // Create a FormData object to handle file and other data
+        const formData = new FormData();
+        
+        // Append form fields to the FormData object
+        formData.append("id", author._id);
+        formData.append("fullName", profileData.fullName || author.fullName);
+        formData.append("profession", profileData.profession || author.profession);
+        formData.append("bio", profileData.bio || author.bio);
+        formData.append("facebook", profileData.facebook || author.social.facebook);
+        formData.append("instagram", profileData.instagram || author.social.instagram);
+        formData.append("twitter", profileData.twitter || author.social.twitter);
+        formData.append("linkedin", profileData.linkedin || author.social.linkedin);
 
-        const response = await axios.put(`${baseURL}author/profile`, updatedProfile, {
+        // If there is a file, append it to FormData
+        if (profileData.file) {
+            formData.append("file", profileData.file);
+        }
+
+        const response = await axios.put(`${baseURL}author/profile`, formData, {
           headers: {
             'Content-Type': "multipart/form-data"
           }
@@ -136,33 +140,41 @@ function Profile() {
         const result = await response.data
 
         console.log(result);
-        
-        
-        // if(!result.status){
-        //   setModalContent({ title: result.message , body: 'Unable to register user' });
-        //   openModal();
-        // }else{
-        //   setModalContent({ title: result.message , body: 'Registration successful, a message has been sent to your email, verify your email before you can login' });
-        //   setContactForm({
-        //     fullName: '',
-        //     email: '',
-        //     password: '',
-        //     confirm_password: '',
-        //     profession: '',
-        //     bio: '',
-        //     facebook: '',
-        //     instagram: '',
-        //     twitter: '',
-        //     linkedin: '',
-        //     file: null
-        //   })
-        //   openModal();
-        // }
+        if(!result.status){
+          setPasswordErrors({
+            status: true,
+            message : result.message,
+            stat: false
+          })
+        }else{
+          setPasswordErrors({
+            status: true,
+            message : result.message,
+            stat: true
+          })
+
+          setUser({
+            ...user,
+            user: result.user
+          })
+
+          setTimeout(() => {
+            hideHandle();
+            setPasswordErrors({
+              status: false,
+              message: '',
+              stat: false
+            });
+          }, 1500);
+        }
 
       } catch (error) {
         console.log(error);
-        // setModalContent({ title: error.message, body: 'An error occurred. Please try again later.' });
-        // openModal()
+        setPasswordErrors({
+          status: true,
+          message : 'Unable to connect. Try again later!',
+          stat: false
+        })
       }
     }
   }
@@ -225,10 +237,23 @@ function Profile() {
             password: '',
             confirm_password: ''
           })
+
+          setTimeout(() => {
+            setPasswordErrors({
+              status: false,
+              message: '',
+              stat: false
+            });
+          }, 1500);
         }
 
       } catch (error) {
         console.log(error);
+        setPasswordErrors({
+          status: true,
+          message : 'Unable to connect. Try again later!',
+          stat: false
+        })
       }
     }
   }
@@ -282,7 +307,7 @@ function Profile() {
                 </div> 
 
                 <div className='change_password'>
-                  <button onClick={showPasswordHandle} data-bs-toggle="modal" data-bs-target="#exampleModal">Change password</button>
+                  <button data-bs-toggle="modal" data-bs-target="#exampleModal">Change password</button>
                 </div>
 
                 <div className=" px-2 rounded mt-4 date "> 
@@ -293,8 +318,17 @@ function Profile() {
             </div>
           : 
             <div className='createAuthor'>
+              <div className="goBack" onClick={hideHandle}>
+                <FontAwesomeIcon icon={faArrowLeft} />
+              </div>
               <h2 className='heading2'>Edit your Profile</h2>
               <form action="" method="post" className='contact_form' encType="multipart/form-data" onSubmit={handleSubmit}>
+
+                {passwordErrors.status && (
+                  <p className={`alert ${passwordErrors.stat ? 'alert-success' : 'alert-danger'} text-capitalize`}>
+                    {passwordErrors.message}
+                  </p>
+                )}
                 <Input label='Enter your full name' name='fullName' type='text' errors={errors.fullName} handleFileChange={handleChange} placeholder='Full Name' value={profileData.fullName} />
 
                 <Input label='Enter your profession' name='profession' type='text' errors={errors.profession} handleFileChange={handleChange} placeholder='Profession' value={profileData.profession} />
@@ -315,7 +349,7 @@ function Profile() {
 
               <div className="input_group">
                 <label htmlFor="file">Choose your profile picture</label>
-                <input type="file" placeholder='Linkedin link'  className='body1' name="file" onChange={handleFileChange} accept='image/png, image/jpeg' id='file' value={profileData.file}/>
+                <input type="file" placeholder='Linkedin link'  className='body1' name="file" onChange={handleFileChange} accept='image/png, image/jpeg' id='file'/>
                 {errors.file && <p className="error">{errors.file}</p>}
               </div>
 
@@ -354,10 +388,6 @@ function Profile() {
           </div>
         </div>
       </div>
-
-      {isOpen && (
-        <Modal isOpen={isOpen} onClose={closeModal} title={modalContent.title} body={modalContent.body}  />
-      )}
     </section>
   )
 }

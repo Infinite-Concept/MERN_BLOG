@@ -40,6 +40,12 @@
 
 .createBlogForm{
 
+    h2{
+        margin-bottom: 20px;
+        color: var(--black-blue);
+        font-weight: 900;
+    }
+
     label{
         font-size: 14px;
         font-style: italic;
